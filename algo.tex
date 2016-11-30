@@ -13,12 +13,13 @@
 \label{alg:augucb}
 \begin{algorithmic}
 \State {\bf Input:} Time horizon $T$, exploration parameters $\rho$ and $\psi$, threshold $\tau$.
-\State {\bf Initialization:} Set $B_{0}:=A$,$\gamma=\big\lfloor \dfrac{1}{2}\log_{2} \dfrac{T}{e}\big\rfloor $, $m:=0$ and $\epsilon_{0}:=1$.
+\State {\bf Initialization:} Set $B_{0}:=A$, $\gamma=\big\lfloor \dfrac{1}{2}\log_{2} \dfrac{T}{e}\big\rfloor $, $m:=0$ and $\epsilon_{0}:=1$.
 \State Pull each arm once
 %\State \For{$m=0,1,..\big \lfloor \dfrac{1}{2}\log_{2} \dfrac{T}{e}\big\rfloor$}{	
 \State $N_{0}=\big\lfloor \dfrac{T}{\gamma} \big\rfloor$
 \State \For{$t=K+1,..,T$}{	
-\State Pull arm $i$ in $B_m$ such that $\min_{i\in B_{m}}\bigg\lbrace |\hat{r}_{i} - \tau | - \sqrt{\dfrac{\rho \log (\psi T \epsilon_{m}^{2})}{2 n_{i}}} \bigg\rbrace$, where $n_{i}$ is the number of times the arm $i$ has been pulled. 
+\State Pull arm $i$ in $B_m$ such that $\min_{i\in B_{m}}\bigg\lbrace |\hat{r}_{i} - \tau | - \sqrt{\dfrac{\rho \log (\psi T \epsilon_{m}^{2})}{2 n_{i}}} \bigg\rbrace$, where $n_{i}$ is the number of times the arm $i$ has been pulled.
+\State $t:=t+1$ 
 \State \If{$t\geq N_{m}$}{
 \ArmElim
 \State For each arm $i \in B_{m}$, remove arm ${i}$ from $B_{m}$ if
@@ -44,12 +45,18 @@
 \end{algorithmic}
 \end{algorithm}
 
-In algorithm \ref{alg:augucb} hence referred to as AugUCB we have three input parameters, $\rho$ which is the arm elimination parameter, $\psi$ which is the exploration regulatory factor and the threshold $\tau$. The salient feature of the algorithm is listed below:-
+In algorithm \ref{alg:augucb}, hence referred to as AugUCB, we have three input parameters, $\rho$ which is the arm elimination parameter, $\psi$ which is the exploration regulatory factor and the threshold $\tau$. The salient features of the algorithm are listed below:-
 \begin{itemize}
-\item AugUCB combines the power of UCB-Improved (\cite{auer2010ucb}) , APT (\cite{locatelli2016optimal}) and SAR (\cite{gabillon2011multi}). To make it an anytime algorithm, we no longer pull all the arms equal number of times in each round but pull arm that minimizes the condition as specified.
-\item This also gets rid of the excessive initial exploration employed by UCB-Improved and yet with suitable choice of $\rho$ and $\psi$ \cite{liu2016modification} we can fine tune the exploration.
+\item AugUCB combines the power of UCB-Improved (\cite{auer2010ucb}) , APT (\cite{locatelli2016optimal}) and SAR (\cite{gabillon2011multi}). The main approach is based on UCB-Improved with modifications suited for the thresholding bandit problem. The active set $B_{0}$ is initialized with all the arms from $A$.
+\item We divide the entire budget $T$ into rounds/phases as like UCB-Improved, SAR  and CSAR. The choice of $\gamma$ comes from UCB-Improved which necessarily entails that the $\epsilon_{m}\geq \sqrt{\frac{e}{T}}$. So, $\gamma$ is the total number of rounds and is the same as UCB-Improved. After the end of each such phase we eliminate arm(s) from active set and update parameters.
+\item As suggested by \cite{liu2016modification} to make AugUCB an anytime algorithm and to overcome too much early exploration, we no longer pull all the arms equal number of times in each round but pull the arm that minimizes 
+\begin{align*}
+\bigg\lbrace |\hat{r}_{i} - \tau | - \sqrt{\dfrac{\rho \log (\psi T \epsilon_{m}^{2})}{2 n_{i}}} \bigg\rbrace
+\end{align*}
+in the active set $B_{m}$. 
 \item $\min_{i\in B_{m}}\bigg\lbrace |\hat{r}_{i} - \tau | - \sqrt{\dfrac{\rho \log (\psi T \epsilon_{m}^{2})}{2 n_{i}}} \bigg\rbrace$ condition actually makes it possible to pull the arms closer to the threshold $\tau$. This is a strategy used by APT.
-\item The arm elimination condition simply removes arm(s) if the algorithm is sufficiently sure that are very high or very low about the threshold. This although is a tactic similar to SAR, but here at any round, an arbitrary number of arms can be accepted or rejected thereby improving upon SAR which accepts/rejects one arm in every round.
-\item Also it doesn't matter how many arms are there in $B_{m}$, as the algorithm outputs all the arms whose estimated average payoff is above the threshold $\tau$ thereby making this an anytime algorithm whereby we need not finish every round.
+\item This also gets rid of the excessive initial exploration employed by UCB-Improved and yet with suitable choice of $\rho$ and $\psi$ we can fine tune the exploration.
+\item The arm elimination condition simply removes arm(s) if the algorithm is sufficiently sure that are very high or very low about the threshold. This although is a tactic similar to SAR or CSAR, but here at any round, an arbitrary number of arms can be accepted or rejected thereby improving upon SAR and CSAR which accepts/rejects one arm in every round.
+\item At the end of the budget $T$ the algorithm outputs all the arms whose estimated average payoff $\hat{r}_{i}$ is above the threshold $\tau$ thereby making this an anytime algorithm whereby we need not finish every round.
 \item The arm elimination condition(s) simply help in re-allocating the remaining budget/pulls among the arms while those among the remaining arms are pulled which are closer to the threshold. Arms lying far to the either side of the threshold are eliminated from the active set $B_{m}$.
 \end{itemize}
