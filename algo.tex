@@ -1,0 +1,55 @@
+%The algorithm is presented below:-
+
+%%%%%%%%%%%%%%%% alg-custom-block %%%%%%%%%%%%
+\algblock{ArmElim}{EndArmElim}
+\algnewcommand\algorithmicArmElim{\textbf{\em Arm Elimination}}
+ \algnewcommand\algorithmicendArmElim{}
+\algrenewtext{ArmElim}[1]{\algorithmicArmElim\ #1}
+\algrenewtext{EndArmElim}{\algorithmicendArmElim}
+\algtext*{EndArmElim}
+
+\begin{algorithm}[t]
+\caption{AugmentedUCB}
+\label{alg:augucb}
+\begin{algorithmic}
+\State {\bf Input:} Time horizon $T$, exploration parameters $\rho$ and $\psi$, threshold $\tau$.
+\State {\bf Initialization:} Set $B_{0}:=A$,$\gamma=\big\lfloor \dfrac{1}{2}\log_{2} \dfrac{T}{e}\big\rfloor $, $m:=0$ and $\epsilon_{0}:=1$.
+\State Pull each arm once
+%\State \For{$m=0,1,..\big \lfloor \dfrac{1}{2}\log_{2} \dfrac{T}{e}\big\rfloor$}{	
+\State $N_{0}=\big\lfloor \dfrac{T}{\gamma} \big\rfloor$
+\State \For{$t=K+1,..,T$}{	
+\State Pull arm $i$ in $B_m$ such that $\min_{i\in B_{m}}\bigg\lbrace |\hat{r}_{i} - \tau | - \sqrt{\dfrac{\rho \log (\psi T \epsilon_{m}^{2})}{2 n_{i}}} \bigg\rbrace$, where $n_{i}$ is the number of times the arm $i$ has been pulled. 
+\State \If{$t\geq N_{m}$}{
+\ArmElim
+\State For each arm $i \in B_{m}$, remove arm ${i}$ from $B_{m}$ if
+\begin{align*}
+\hat{r}_{i} + \sqrt{\dfrac{\rho\log{(\psi T\epsilon_{m}^{2})}}{2 n_{i}}}  < \tau -\sqrt{\dfrac{\rho\log{(\psi T\epsilon_{m}^{2})}}{2 n_{i}}} 
+\end{align*}
+\State For each arm $i \in B_{m}$, remove arm ${i}$ from $B_{m}$ if
+\begin{align*}
+\hat{r}_{i} - \sqrt{\dfrac{\rho\log{(\psi T\epsilon_{m}^{2})}}{2 n_{i}}}  > \tau +\sqrt{\dfrac{\rho\log{(\psi T\epsilon_{m}^{2})}}{2 n_{i}}} 
+\end{align*}
+\EndArmElim
+\State $\epsilon_{m+1}:=\dfrac{\epsilon_{m}}{2}$
+\State $B_{m+1} := B_{m}$
+%\State $p_{m+1}:=p_{m}+1$
+%\State $\gamma := \dfrac{p+1}{p}$
+\State $N_{m+1} := N_{m} + \big\lfloor \dfrac{T}{\gamma} \big\rfloor$
+% + \lfloor\gamma N_{m}\rfloor $
+\State $m := m+1$
+}
+}
+%\EndFor
+\State Output $J_{\tau}=\lbrace i: \hat{r}_{i}\geq \tau \rbrace$.
+\end{algorithmic}
+\end{algorithm}
+
+In algorithm \ref{alg:augucb} hence referred to as AugUCB we have three input parameters, $\rho$ which is the arm elimination parameter, $\psi$ which is the exploration regulatory factor and the threshold $\tau$. The salient feature of the algorithm is listed below:-
+\begin{itemize}
+\item AugUCB combines the power of UCB-Improved (\cite{auer2010ucb}) , APT (\cite{locatelli2016optimal}) and SAR (\cite{gabillon2011multi}). To make it an anytime algorithm, we no longer pull all the arms equal number of times in each round but pull arm that minimizes the condition as specified.
+\item This also gets rid of the excessive initial exploration employed by UCB-Improved and yet with suitable choice of $\rho$ and $\psi$ \cite{liu2016modification} we can fine tune the exploration.
+\item $\min_{i\in B_{m}}\bigg\lbrace |\hat{r}_{i} - \tau | - \sqrt{\dfrac{\rho \log (\psi T \epsilon_{m}^{2})}{2 n_{i}}} \bigg\rbrace$ condition actually makes it possible to pull the arms closer to the threshold $\tau$. This is a strategy used by APT.
+\item The arm elimination condition simply removes arm(s) if the algorithm is sufficiently sure that are very high or very low about the threshold. This although is a tactic similar to SAR, but here at any round, an arbitrary number of arms can be accepted or rejected thereby improving upon SAR which accepts/rejects one arm in every round.
+\item Also it doesn't matter how many arms are there in $B_{m}$, as the algorithm outputs all the arms whose estimated average payoff is above the threshold $\tau$ thereby making this an anytime algorithm whereby we need not finish every round.
+\item The arm elimination condition(s) simply help in re-allocating the remaining budget/pulls among the arms while those among the remaining arms are pulled which are closer to the threshold. Arms lying far to the either side of the threshold are eliminated from the active set $B_{m}$.
+\end{itemize}

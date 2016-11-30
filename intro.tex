@@ -1,0 +1,26 @@
+In this paper we study a specific combinatorial pure exploration problem called thresholding bandit problem in the stochastic multi-armed bandit setting. In the stochastic multi-armed bandit setting a learning agent is required to choose from a set of decisions or arms in a given round. The agent is then presented with a reward for that round, which is an independent draw from a stationary distribution specific to the arm selected. The objective of the agent is to maximize the cumulative reward. The agent, however, does not know the mean of the distributions associated with each arm, denoted by $r_{i}$, including the optimal arm which will give it the best reward, denoted by $r^{*}$. The agent attempts to make arm choices that will maximize the cumulative reward by keeping track of the reward that has been gathered from previous selections of the arm, for each arm. This is called the estimated mean reward of an arm denoted by $\hat{r}_{i}$. The bandit problem can be conceptualized as a sequential decision making process where the agent is at each round presented with an exploitation-exploration dilemma. The agent could pull the arm which has the highest observed mean reward till now (exploitation) or to explore other arms, with the prospect of finding superior performance which was previously unobserved (exploration). 
+
+	Formally, let $r_i$, $i=1,\ldots,K$ denote the mean rewards of the $K$ arms and $r^* = \max_i r_i$ the optimal mean reward. The objective in the stochastic bandit problem is to minimize the cumulative regret, which is defined as follows:
+\begin{align*}
+R_{T}=r^{*}T - \sum_{i\in A} r_{i}N_{i}(T),
+\end{align*}
+where $T$ is the number of rounds, $N_{i}(T)=\sum_{m=1}^n I(I_m=i)$ is the number of times the algorithm chose arm $i$ up to round $T$.
+The expected regret of an algorithm after $T$ rounds can be written as
+%\newline
+%\newline
+\begin{align*}
+\E[R_{T}]= \sum_{i=1}^K \E[N_i(T)] \Delta_i,
+\end{align*}
+where $\Delta_{i}=r^{*}-r_{i}$ denotes the gap between the means of the optimal arm and of the $i$-th arm. 
+
+%We define the regret$(R_{n})$ of an algorithm after $T$ trials as
+%%\newline
+%%\newline
+%\begin{align*}
+%R_{T}=r^{*}T - \sum_{i\in A} r_{i}E[N_{i}]
+%\end{align*}
+%%\hspace*{6em}$R_{T}=r^{*}T$ - $\sum_{i\in A} r_{i}E[N_{i}]$
+%%\newline
+%%\newline
+%where $N_{i}$ denotes the number of times the learning agent chooses arm $i$ within the first $T$ trials. We also define $\Delta_{i}=r^{*}-r_{i}$, that is the difference between the mean of the optimal arm and the $i$-th sub-optimal arm (for simplicity we assume that there is only one optimal arm which will give the highest payoff). The problem, understandably, gets more challenging when the $\Delta_{i}$'s are smaller.
+                                                                                                                                          

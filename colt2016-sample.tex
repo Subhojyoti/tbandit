@@ -1,0 +1,141 @@
+\documentclass[fleqn,anon,12pt]{colt2016} % Anonymized submission
+% \documentclass{colt2016} % Include author names
+
+% The following packages will be automatically loaded:
+% amsmath, amssymb, natbib, graphicx, url, algorithm2e
+\usepackage{amssymb}
+\usepackage{amsmath,amsfonts,graphicx}
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+\usepackage{verbatim}
+\usepackage{graphicx}
+
+
+\newcommand{\E}{\mathbb{E}}
+\allowdisplaybreaks
+\usepackage{booktabs}
+
+\usepackage{xcolor}
+\usepackage{paralist}
+\usepackage{times}
+\usepackage{tikz}
+\usepackage{pgfplots}
+%\usepackage{subfigure}
+\usepackage[english]{babel}
+%\usetikzlibrary{positioning,shapes,calc,patterns,fit,decorations}
+
+%%\usepackage[numbers]{natbib}
+\usepackage{caption}
+\usepackage{subcaption}
+\usepackage{xspace}
+%\usepackage{todonotes}
+\newcommand{\todos}[2][]{\xspace\todo[color=red!20!white,size=\tiny,#1]{#2}}
+%
+\usepackage{makecell}
+\newcommand{\tabl}[2]{\begin{tabular}{#1} #2 \end{tabular}}
+%\newcommand{\ith}[2][th]{$#2^{\text{#1}}$}
+
+
+
+
+\title[Thresholding Bandits with Augmented UCB]{Thresholding Bandits with Augmented UCB}
+\usepackage{times}
+ % Use \Name{Author Name} to specify the name.
+ % If the surname contains spaces, enclose the surname
+ % in braces, e.g. \Name{John {Smith Jones}} similarly
+ % if the name has a "von" part, e.g \Name{Jane {de Winter}}.
+ % If the first letter in the forenames is a diacritic
+ % enclose the diacritic in braces, e.g. \Name{{\'E}louise Smith}
+
+ % Two authors with the same address
+  % \coltauthor{\Name{Author Name1} \Email{abc@sample.com}\and
+  %  \Name{Author Name2} \Email{xyz@sample.com}\\
+  %  \addr Address}
+
+ % Three or more authors with the same address:
+ % \coltauthor{\Name{Author Name1} \Email{an1@sample.com}\\
+ %  \Name{Author Name2} \Email{an2@sample.com}\\
+ %  \Name{Author Name3} \Email{an3@sample.com}\\
+ %  \addr Address}
+
+
+ % Authors with different addresses:
+ \coltauthor{\Name{Author Name1} \Email{abc@sample.com}\\
+ \addr Address 1
+ \AND
+ \Name{Author Name2} \Email{xyz@sample.com}\\
+ \addr Address 2
+ }
+
+
+
+\begin{document}
+
+\maketitle
+
+\begin{abstract}
+To be written
+\end{abstract}
+
+%\begin{keywords}
+%Multi-Armed Bandit, Regret, Exploration-exploitation, UCB
+%\end{keywords}
+
+\section{Introduction}
+\label{intro}
+\input{intro}
+
+\section{Motivation}
+\label{motivation}
+\input{motivation}
+
+
+\section{Contribution}
+\label{contribution}
+\input{contribution}
+
+\section{Related Works and Previous Results}
+\label{prevRes}
+\input{prevRes}
+
+\section{Notation Used and Assumptions}
+\label{notation}
+\input{notation}
+
+\section{Augmented UCB}
+\label{algo}
+\input{algo}
+
+\section{Main Results}
+\label{results}
+%\input{results}
+
+
+\section{Experimental Run:}
+\label{expt}
+\input{expt}
+
+
+\section{Conclusion and Future work}
+\label{conclusion}
+\input{conclusion}
+
+
+
+
+% Acknowledgments---Will not appear in anonymized version
+%\acks{We thank a bunch of people.}
+
+
+\bibliography{biblio}
+
+
+%\label{appendix}
+%\input{appendix}
+
+
+
+
+\end{document}
+
+
