@@ -1,1 +1,69 @@
 To be written.
+
+\subsection{Problem Complexity}
+
+We define problem complexity as,
+\begin{align*}
+H^{\tau} = \sum_{i=1}^{K}\dfrac{1}{(\Delta_{i}^{\tau})^{2}} \text{, where } \Delta_{i}^{\tau}=|r_{i}-\tau|
+\end{align*}
+
+This is same as the problem complexity defined in \cite{locatelli2016optimal} for the thresholding bandit problem and is similar to the problem complexity defined in \cite{audibert2010best} for single best arm identification.
+
+\subsection{Theorem 1}
+
+\begin{proof}
+
+According to the algorithm, $m=\lbrace 0,1,2,.. \gamma\rbrace $ where $\gamma=\big\lfloor \dfrac{1}{2}\log_{2} \dfrac{T}{e}\big\rfloor$. So, $\epsilon_{m}\geq 2^{-\gamma} = \sqrt{\dfrac{e}{T}}$. Also each round $m$ consists of $\lfloor \dfrac{T}{\gamma}\rfloor$ timesteps or atmost $\dfrac{2T}{\log_{2}\frac{T}{e}}$ timesteps.
+
+Let $c_{i}= \sqrt{\dfrac{\rho\log{(\psi T\epsilon_{m}^{2})}}{2 n_{i}}}$ denote the confidence interval.
+
+At the end of any round $m$, for any arm $i$, two events are possible.
+\begin{enumerate}
+\item for any arm $i$, it is still in active set $B_{m}$. For this case both the below two events have to come true,
+\begin{align*}
+2\hat{r}_{i} + c_{i} \geq \tau - c_{i} 
+\rightarrow 2\hat{r}_{i} + 2c_{i} -\tau \geq 0
+\end{align*}
+\begin{align*}
+\Pb\bigg\lbrace \hat{r}_{i} \geq r_{i} + 2c_{i} - \tau \bigg\rbrace 
+%&=\Pb\bigg\lbrace 2\hat{r}_{i} \geq r_{i} + 2c_{i} + (r_{i} - \tau) \bigg\rbrace\\
+%&=\Pb\bigg\lbrace 2\hat{r}_{i} \geq r_{i} + 2c_{i} + \Delta_{i}^{\tau} \bigg\rbrace\\ 
+%&\leq exp\bigg\lbrace -2(2c_{i}+\Delta_{i}^{\tau})^{2} n_{i}  \bigg\rbrace\\
+&\leq exp\bigg\lbrace -2(2c_{i}-\tau)^{2} n_{i}  \bigg\rbrace\\
+&\leq exp\bigg\lbrace -2(\frac{2c_{i}}{\tau})^{2} n_{i}  \bigg\rbrace\\
+&\leq exp\bigg\lbrace -8\frac{c_{i}^{2}}{\tau^{2}} n_{i}  \bigg\rbrace \text{, as by definition } \tau \geq 0\\
+&= \dfrac{1}{\psi T \epsilon_{m}^{2}} \text{, for } \rho=\dfrac{\tau^{2}}{8}\\
+&\leq \dfrac{e}{\psi T^{2}} \text{, as } \dfrac{1}{\epsilon_{m}^{2}}\leq \dfrac{T}{e},  \forall m=0,1,2,..,\gamma
+\end{align*}
+
+
+\begin{align*}
+\hat{r}_{i} - \sqrt{\dfrac{\rho\log{(\psi T\epsilon_{m}^{2})}}{2 n_{i}}}  < \tau +\sqrt{\dfrac{\rho\log{(\psi T\epsilon_{m}^{2})}}{2 n_{i}}} 
+\end{align*}
+These are the two complementary events of the conditions mentioned in AugUCB arm elimination section.
+
+\begin{align*}
+\Pb\bigg\lbrace \hat{r}_{i} > r_{i}  \bigg\rbrace
+\end{align*}
+
+\item for any arm $i$, it is eliminated from $B_{m}$.
+
+	For any round $m$, for any timestep $t\in m$ an arm $k\in B_{m}$ gets pulled if,
+\begin{align*}
+|\hat{r}_{k} - \tau| - c_{k} < |\hat{r}_{i} - \tau| - c_{k} \text{, } \forall i\in B_{m}
+\end{align*}
+
+Now from reverse triangle inequality,
+\begin{align*}
+|\hat{r}_{i}(t) - r_{i}|&=|(\hat{r}_{i}(t)-\tau) - (r_{i}-\tau)|\\
+&\geq ||\hat{r}_{i}(t)-\tau|-|(r_{i}-\tau)||\\
+&\geq |\hat{\Delta}_{i}^{\tau}(t) - \Delta_{i}^{\tau}|
+\end{align*}
+
+
+
+\end{enumerate}
+
+
+
+\end{proof}
