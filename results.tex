@@ -13,34 +13,63 @@ This is same as the problem complexity defined in \cite{locatelli2016optimal} fo
 
 \begin{proof}
 
-According to the algorithm, $m=\lbrace 0,1,2,.. \gamma\rbrace $ where $\gamma=\big\lfloor \dfrac{1}{2}\log_{2} \dfrac{T}{e}\big\rfloor$. So, $\epsilon_{m}\geq 2^{-\gamma} = \sqrt{\dfrac{e}{T}}$. Also each round $m$ consists of $\lfloor \dfrac{T}{\gamma}\rfloor$ timesteps or atmost $\dfrac{2T}{\log_{2}\frac{T}{e}}$ timesteps.
+According to the algorithm, the number of rounds is $m=\lbrace 0,1,2,.. \gamma\rbrace $ where $\gamma=\big\lfloor \dfrac{1}{2}\log_{2} \dfrac{T}{e}\big\rfloor$. So, $\epsilon_{m}\geq 2^{-\gamma} = \sqrt{\dfrac{e}{T}}$. Also each round $m$ consists of $\lfloor \dfrac{T}{\gamma}\rfloor$ timesteps or atmost $\dfrac{2T}{\log_{2}\frac{T}{e}}$ timesteps.
 
 Let $c_{i}= \sqrt{\dfrac{\rho\log{(\psi T\epsilon_{m}^{2})}}{2 n_{i}}}$ denote the confidence interval.
 
 At the end of any round $m$, for any arm $i$, two events are possible.
 \begin{enumerate}
-\item for any arm $i$, it is still in active set $B_{m}$. For this case both the below two events have to come true,
+\item for any arm $i$, if it is eliminated from active set $B_{m}$. For this case both the below two events have to come true,
+\begin{align}
+\hat{r}_{i} + c_{m_{i}} < \tau - c_{m_{i}}, \label{eq:armelim-casea}\\
+\hat{r}_{i} - c_{m_{i}} > \tau + c_{m_{i}}, \label{eq:armelim-caseb}
+\end{align}
+
+For \ref{eq:armelim-casea} we can see that it eliminates arms that have performed poorly and removes them them from $B_{m}$. Similarly, \ref{eq:armelim-caseb} eliminates arms from $B_{m}$ that have performed very well compared to threshold $\tau$.
+
+Putting the value of $n_{m_{i}}=\dfrac{2\log{(\psi T\epsilon_{m_{i}}^{2})}}{\epsilon_{m_{i}}}$ in $c_{m_{i}}$,
+$c_{m_{i}}=\sqrt{\dfrac{\rho_{a}\epsilon_{m_{i}}\log (\psi T\epsilon_{m_{i}}^{2})}{2*2 \log(\psi T\epsilon_{m_{i}}^{2})}}=\dfrac{\sqrt{\rho_{a}\epsilon_{m_{i}}}}{2} = \sqrt{\rho_{a}\epsilon_{m_{i}+1}} < \dfrac{\Delta_{i}}{4} $, as $\rho_{a}\in (0,1]$.
+
+Again, for ${i} \in A^{'}$ for \ref{eq:armelim-casea} elimination condition, 
 \begin{align*}
-2\hat{r}_{i} + c_{i} \geq \tau - c_{i} 
-\rightarrow 2\hat{r}_{i} + 2c_{i} -\tau \geq 0
+\hat{r}_{i} + c_{m_{i}}&\leq r_{i} + 2c_{m_{i}} \\
+&= r_{i} + 4c_{m_{i}} - 2c_{m_{i}} \\
+&< r_{i} + \Delta_{i}^{\tau} - 2c_{m_{i}}\\
+&= \tau -2c_{m_{i}} \\
+&\leq \tau - c_{m_{i}}
 \end{align*}
+
+Also, for ${i} \in A^{'}$ for \ref{eq:armelim-caseb} elimination condition, 
 \begin{align*}
-\Pb\bigg\lbrace \hat{r}_{i} \geq r_{i} + 2c_{i} - \tau \bigg\rbrace 
-%&=\Pb\bigg\lbrace 2\hat{r}_{i} \geq r_{i} + 2c_{i} + (r_{i} - \tau) \bigg\rbrace\\
-%&=\Pb\bigg\lbrace 2\hat{r}_{i} \geq r_{i} + 2c_{i} + \Delta_{i}^{\tau} \bigg\rbrace\\ 
-%&\leq exp\bigg\lbrace -2(2c_{i}+\Delta_{i}^{\tau})^{2} n_{i}  \bigg\rbrace\\
-&\leq exp\bigg\lbrace -2(2c_{i}-\tau)^{2} n_{i}  \bigg\rbrace\\
-&\leq exp\bigg\lbrace -2(\frac{2c_{i}}{\tau})^{2} n_{i}  \bigg\rbrace\\
-&\leq exp\bigg\lbrace -8\frac{c_{i}^{2}}{\tau^{2}} n_{i}  \bigg\rbrace \text{, as by definition } \tau \geq 0\\
-&= \dfrac{1}{\psi T \epsilon_{m}^{2}} \text{, for } \rho=\dfrac{\tau^{2}}{8}\\
-&\leq \dfrac{e}{\psi T^{2}} \text{, as } \dfrac{1}{\epsilon_{m}^{2}}\leq \dfrac{T}{e},  \forall m=0,1,2,..,\gamma
+\hat{r}_{i} - c_{m_{i}}&\geq r_{i} - 2c_{m_{i}} \\
+&= r_{i} - 4c_{m_{i}} + 2c_{m_{i}} \\
+&> r_{i} - \Delta_{i}^{\tau} + 2c_{m_{i}}\\
+&\geq \tau + 2c_{m_{i}} \\
+&\geq \tau + c_{m_{i}}
 \end{align*}
+
+Applying Chernoff-Hoeffding bound and considering independence of complementary of the two events in \ref{eq:armelim-casea} and \ref{eq:armelim-caseb},
+  \begin{align*}
+\mathbb{P}\lbrace\hat{r}^{*}&\leq r^{*} - c_{m_{i}}\rbrace\leq exp(-2c_{m_{i}}^{2}n_{m_{i}})\\
+&\leq exp(-2 * \dfrac{\rho_{a}\log (\psi T\epsilon_{m_{i}}^{2})}{2 n_{m_{i}}} *n_{m_{i}})\\
+&\leq \dfrac{1}{(\psi T\epsilon_{m_{i}}^{2})^{\rho_{a}}}   
+  \end{align*}
+
+
+%\begin{align*}
+%\Pb\bigg\lbrace \hat{r}_{i} \geq r_{i} + 2c_{i} - \tau \bigg\rbrace 
+%&\leq exp\bigg\lbrace -2(2c_{i}-\tau)^{2} n_{i}  \bigg\rbrace\\
+%&\leq exp\bigg\lbrace -2(\frac{2c_{i}}{\tau})^{2} n_{i}  \bigg\rbrace\\
+%&\leq exp\bigg\lbrace -8\frac{c_{i}^{2}}{\tau^{2}} n_{i}  \bigg\rbrace \text{, as by definition } \tau \geq 0\\
+%&= \dfrac{1}{\psi T \epsilon_{m}^{2}} \text{, for } \rho=\dfrac{\tau^{2}}{8}\\
+%&\leq \dfrac{e}{\psi T^{2}} \text{, as } \dfrac{1}{\epsilon_{m}^{2}}\leq \dfrac{T}{e},  \forall m=0,1,2,..,\gamma
+%\end{align*}
 
 
 \begin{align*}
 \hat{r}_{i} - \sqrt{\dfrac{\rho\log{(\psi T\epsilon_{m}^{2})}}{2 n_{i}}}  < \tau +\sqrt{\dfrac{\rho\log{(\psi T\epsilon_{m}^{2})}}{2 n_{i}}} 
 \end{align*}
-These are the two complementary events of the conditions mentioned in AugUCB arm elimination section.
+These are the two events mentioned in AugUCB arm elimination section.
 
 \begin{align*}
 \Pb\bigg\lbrace \hat{r}_{i} > r_{i}  \bigg\rbrace
@@ -60,10 +89,6 @@ Now from reverse triangle inequality,
 &\geq |\hat{\Delta}_{i}^{\tau}(t) - \Delta_{i}^{\tau}|
 \end{align*}
 
-
-
 \end{enumerate}
-
-
 
 \end{proof}
