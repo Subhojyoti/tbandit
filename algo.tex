@@ -13,7 +13,7 @@
 \label{alg:augucb}
 \begin{algorithmic}
 \State {\bf Input:} Time horizon $T$, exploration parameters $\rho$ and $\psi$, threshold $\tau$.
-\State {\bf Initialization:} Set $B_{0}:=A$, $\gamma=\big\lfloor \dfrac{1}{2}\log_{2} \dfrac{T}{e}\big\rfloor $, $m:=0$, $N_{0}=\big\lfloor \dfrac{T}{\gamma} \big\rfloor$ and $\epsilon_{0}:=1$.
+\State {\bf Initialization:} Set $B_{0}:=A$, $\gamma=\big\lfloor \dfrac{1}{2}\log_{2} \dfrac{T}{e}\big\rfloor $, $m:=0$, $\epsilon_{0}:=1$ and $N_{0}=\big\lceil \dfrac{\log(\psi T\epsilon_{0}^{2})}{\epsilon_{0}} \big\rceil$.
 \State Pull each arm once
 %\State \For{$m=0,1,..\big \lfloor \dfrac{1}{2}\log_{2} \dfrac{T}{e}\big\rfloor$}{	
 %\State $N_{0}=\big\lfloor \dfrac{T}{\gamma} \big\rfloor$
@@ -35,7 +35,7 @@
 \State $B_{m+1} := B_{m}$
 %\State $p_{m+1}:=p_{m}+1$
 %\State $\gamma := \dfrac{p+1}{p}$
-\State $N_{m+1} := N_{m} + \big\lfloor \dfrac{T}{\gamma} \big\rfloor$
+\State $N_{m+1} := N_{m} + \big\lceil \dfrac{\log(\psi T\epsilon_{m}^{2})}{\epsilon_{m}} \big\rceil$
 % + \lfloor\gamma N_{m}\rfloor $
 \State $m := m+1$
 }
