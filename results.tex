@@ -16,21 +16,21 @@ For any arbitrary round $m$, we know that the number of pulls allocated for that
 $n_{m} = \dfrac{\log(\psi T \epsilon_{m}^{2})}{\epsilon_{m}}$. Now, 
 
 \begin{align*}
-n_{m} &= \dfrac{2\log(\psi T \epsilon_{m}^{2})}{\epsilon_{m}}\\
-&= \dfrac{2\log(\psi T) + 2\log(\epsilon_{m}^{2})}{\epsilon_{m}}
+n_{m} &= \dfrac{2\log(\psi T \epsilon_{m}^{2})}{\epsilon_{m}}
+= \dfrac{2\log(\psi T) + 2\log(\epsilon_{m}^{2})}{\epsilon_{m}}
 \end{align*}
 
 Taking summation over all rounds for $m=0,1,...,\gamma$. 
 
 \begin{align*}
-T_{\gamma} &= \sum_{m=0}^{\gamma}\dfrac{2\log(\psi T) + 2\log(\epsilon_{m}^{2})}{\epsilon_{m}}\\
-&= 2\log (\psi T)\sum_{m=0}^{\gamma}\dfrac{1}{\epsilon_{m}} + \sum_{m=0}^{\gamma}\dfrac{2\log (\epsilon_{m}^{2})}{\epsilon_{m}}\\
-&< 2\log (\psi T)\sum_{m=0}^{\gamma}\dfrac{1}{\epsilon_{m}} + \sum_{m=0}^{\gamma}\dfrac{2}{\epsilon_{m}}\\
-&= 2\log (\psi T)[1+2+2^{2}+....+2^{\gamma}] + 2[1+2+2^{2}+....+2^{\gamma}]\\
-&= 2\log (\psi T)[2^{\gamma} - 1] + 2[2^{\gamma} - 1]\\
-&< 2\log (\psi T)\sqrt{\dfrac{T}{e}} + 2\sqrt{\dfrac{T}{e}}\\
-&= 2\sqrt{\dfrac{T}{e}}[\log (\psi T) + 1]\\
-&= 2\sqrt{\dfrac{T}{e}}[2\log (K T) + 1] \text{, for } \psi=K^{2}T\\
+T_{\gamma} &= \sum_{m=0}^{\gamma}\dfrac{2\log(\psi T) + 4\log(\epsilon_{m})}{\epsilon_{m}}\\
+&= 2\log (\psi T)\sum_{m=0}^{\gamma}\dfrac{1}{\epsilon_{m}} + \sum_{m=0}^{\gamma}\dfrac{4\log (\epsilon_{m})}{\epsilon_{m}}\\
+&< 2\log (\psi T)\sum_{m=0}^{\gamma}\dfrac{1}{\epsilon_{m}} + \sum_{m=0}^{\gamma}\dfrac{4}{\epsilon_{m}}\\
+&= 2\log (\psi T)[1+2+2^{2}+....+2^{\gamma}] + 4[1+2+2^{2}+....+2^{\gamma}]\\
+&= 2\log (\psi T)[2^{\gamma} - 1] + 4[2^{\gamma} - 1]\\
+&< 2\log (\psi T)\sqrt{\dfrac{T}{e}} + 4\sqrt{\dfrac{T}{e}}\\
+&= 2\sqrt{\dfrac{T}{e}}[\log (\psi T) + 2]\\
+&= 4\sqrt{\dfrac{T}{e}}[\log (K T) + 1] \text{, for } \psi=K^{2}T\\
 &< T
 \end{align*}
 
@@ -44,11 +44,11 @@ T_{\gamma} &= \sum_{m=0}^{\gamma}\dfrac{2\log(\psi T) + 2\log(\epsilon_{m}^{2})}
 
 According to the algorithm, the number of rounds is $m=\lbrace 0,1,2,.. \gamma\rbrace $ where $\gamma=\big\lfloor \dfrac{1}{2}\log_{2} \dfrac{T}{e}\big\rfloor$. So, $\epsilon_{m}\geq 2^{-\gamma} = \sqrt{\dfrac{e}{T}}$. Also each round $m$ consists of $n_{m} = \dfrac{\log(\psi T \epsilon_{m}^{2})}{\epsilon_{m}}$ timesteps.
 
-Let $c_{i}= \sqrt{\dfrac{\rho\log{(\psi T\epsilon_{m}^{2})}}{2 n_{i}}}$ denote the confidence interval, where $n_{i}$ is the number of times an arm $i$ is pulled.
+Let $c_{m_{i}}= \sqrt{\dfrac{\rho\log{(\psi T\epsilon_{m}^{2})}}{2 n_{i}}}$ denote the confidence interval, where $n_{i}$ is the number of times an arm $i$ is pulled. Let $A^{'}=\lbrace i\in A|\Delta_{i}^{\tau}\geq b\rbrace$, for $b\geq \sqrt{\frac{e}{T}}$. Let $m_{i}$ be the minimum round that an arm $i$ gets eliminated. So $m_{i}=min\lbrace m| \epsilon_{m}<\frac{\Delta_{i}^{\tau}}{2}\rbrace$. In this proof sub-optimal arms refer to the arms whose $r_{i}$ is lower than the threshold $\tau$.
 
 At the end of any round $m$, for any arm $i$, two cases are possible.
 
-\subsubsection{Case a}
+\subsubsection{\textit{Case a: Some sub-optimal arm i is not eliminated on or before round $m_{i}$}}
 For any arm $i$, if it is eliminated from active set $B_{m}$ then the below two events have to come true,
 \begin{align}
 \hat{r}_{i} + c_{m_{i}} < \tau - c_{m_{i}}, \label{eq:armelim-casea}\\
@@ -57,11 +57,11 @@ For any arm $i$, if it is eliminated from active set $B_{m}$ then the below two 
 
 For \ref{eq:armelim-casea} we can see that it eliminates arms that have performed poorly and removes them them from $B_{m}$. Similarly, \ref{eq:armelim-caseb} eliminates arms from $B_{m}$ that have performed very well compared to threshold $\tau$.
 
-Putting the value of $n_{m_{i}}=\dfrac{2\log{(\psi T\epsilon_{m_{i}}^{2})}}{\epsilon_{m_{i}}}$ in $c_{m_{i}}$,
+Each round consist of $n_{m_{i}}$ timesteps and so an arm can be pulled no more than that.  Putting the value of $n_{m_{i}}=\dfrac{2\log{(\psi T\epsilon_{m_{i}}^{2})}}{\epsilon_{m_{i}}}$ in $c_{m_{i}}$,
 \begin{align*}
 c_{m_{i}}&=\sqrt{\dfrac{\rho\epsilon_{m_{i}}\log (\psi T\epsilon_{m_{i}}^{2})}{2*2 \log(\psi T\epsilon_{m_{i}}^{2})}}\\
 & =\dfrac{\sqrt{\rho\epsilon_{m_{i}}}}{2}\\
-& \leq \sqrt{\rho\epsilon_{m_{i}+1}} < \dfrac{\Delta_{i}}{4} \text{, as }\rho\in (0,1].
+& \leq \sqrt{\rho\epsilon_{m_{i}+1}} < \dfrac{\Delta_{i}^{\tau}}{4} \text{, as }\rho\in (0,1].
 \end{align*}
 
 
@@ -98,19 +98,38 @@ Also, for \ref{eq:armelim-caseb} elimination condition by applying Chernoff-Hoef
 
 So the total probability that an arm $i$ is eliminated from $B_{m_{i}}$ is bounded by $\bigg(\dfrac{4}{(\psi T\epsilon_{m_{i}}^{2})^{\rho}}\bigg)$. 
 
-\subsubsection{Case b}
-For any arm $i$, it is not eliminated from $B_{m}$.
+\subsubsection{\textit{Case b: For any arm $i$, it is either eliminated on or before round $m_{i}$ or there is no arm above $\tau$.}}
 
-	For any round $m$, for any timestep $t\in m$ an arm $k\in B_{m}$ gets pulled if,
+
+	For any round $m$, for any timestep $t\in m$ an arm $i\in B_{m}$ gets pulled if,
 \begin{align*}
-|\hat{r}_{k} - \tau| - c_{k} < |\hat{r}_{i} - \tau| - c_{i} \text{, } \forall i\in B_{m}
+|\hat{r}_{i} - \tau| - c_{i} < |\hat{r}_{k} - \tau| - c_{k} \text{, } \forall k\in B_{m}
 \end{align*}
 
 Now from reverse triangle inequality,
+\begin{align}
+|\hat{r}_{k}(t) - r_{k}|&=|(\hat{r}_{k}(t)-\tau) - (r_{k}-\tau)|\\
+&\geq ||\hat{r}_{k}(t)-\tau|-|(r_{k}-\tau)||\\
+&\geq |\hat{\Delta}_{k}^{\tau}(t) - \Delta_{k}^{\tau}| \label{rev-triangle}
+\end{align}
+
+Also, from case a, we know that for every arm $i$, in round $m_{i}$
+
+\begin{align}
+|\hat{r}_{k} - r_{k}| \leq c_{m_{k}} =  \sqrt{\dfrac{\rho\log{(\psi T\epsilon_{m}^{2})}}{2 n_{k}}}  \label{bound-1}
+\end{align}
+
+Now, combining \ref{rev-triangle} and \ref{bound-1} we can see that,
+
 \begin{align*}
-|\hat{r}_{i}(t) - r_{i}|&=|(\hat{r}_{i}(t)-\tau) - (r_{i}-\tau)|\\
-&\geq ||\hat{r}_{i}(t)-\tau|-|(r_{i}-\tau)||\\
-&\geq |\hat{\Delta}_{i}^{\tau}(t) - \Delta_{i}^{\tau}|
+&|\hat{\Delta}_{k}^{\tau}(t) - \Delta_{k}^{\tau}| \leq c_{m_{k}}\\
+&\Rightarrow \Delta_{k}^{\tau} - c_{m_{k}} \leq \hat{\Delta}_{k}^{\tau}(t) \leq \Delta_{k}^{\tau} +c_{m_{k}}
+\end{align*}
+
+Since, at time $t$ in round $m_{i}$ the arm i is pulled, so,
+
+\begin{align*}
+\hat{\Delta}_{i}^{\tau} - c_{i} < \hat{\Delta}_{k}^{\tau} - c_{k}
 \end{align*}
 
 \end{proof}
