@@ -9,11 +9,11 @@ H^{\tau} = \sum_{i=1}^{K}\dfrac{1}{(\Delta_{i}^{\tau})^{2}} \text{, where } \Del
 
 This is same as the problem complexity defined in \cite{locatelli2016optimal} for the thresholding bandit problem and is similar to the problem complexity defined in \cite{audibert2010best} for single best arm identification.
 
-\subsection{Lemma 1} For a given horizon $T$ and $\psi=K^{2}T$, $T_{\gamma} = \sum_{m=0}^{\gamma}\dfrac{\log(\psi T \epsilon_{m}^{2})}{\epsilon_{m}}$ is less than the allocated budget $T$, where $\gamma=0,1,...,\big\lfloor \dfrac{1}{2}\log_{2} \dfrac{T}{e}\big\rfloor$ and $\epsilon_{m}$ is initialized at $1$ and halved after very round. 
+\subsection{Lemma 1} For a given horizon $T$ and $\psi=K^{2}T$, $T_{\gamma} = \sum_{m=0}^{\gamma}\dfrac{2\log(\psi T \epsilon_{m}^{2})}{\epsilon_{m}}$ is less than the allocated budget $T$, where $\gamma=0,1,...,\big\lfloor \dfrac{1}{2}\log_{2} \dfrac{T}{e}\big\rfloor$ and $\epsilon_{m}$ is initialized at $1$ and halved after very round. 
 
 \begin{proof}
 For any arbitrary round $m$, we know that the number of pulls allocated for that round is 
-$n_{m} = \dfrac{\log(\psi T \epsilon_{m}^{2})}{\epsilon_{m}}$. Now, 
+$n_{m} = \dfrac{2\log(\psi T \epsilon_{m}^{2})}{\epsilon_{m}}$. Now, 
 
 \begin{align*}
 n_{m} &= \dfrac{2\log(\psi T \epsilon_{m}^{2})}{\epsilon_{m}}
@@ -23,14 +23,14 @@ n_{m} &= \dfrac{2\log(\psi T \epsilon_{m}^{2})}{\epsilon_{m}}
 Taking summation over all rounds for $m=0,1,...,\gamma$. 
 
 \begin{align*}
-T_{\gamma} &= \sum_{m=0}^{\gamma}\dfrac{2\log(\psi T) + 4\log(\epsilon_{m})}{\epsilon_{m}}\\
-&= 2\log (\psi T)\sum_{m=0}^{\gamma}\dfrac{1}{\epsilon_{m}} + \sum_{m=0}^{\gamma}\dfrac{4\log (\epsilon_{m})}{\epsilon_{m}}\\
-&< 2\log (\psi T)\sum_{m=0}^{\gamma}\dfrac{1}{\epsilon_{m}} + \sum_{m=0}^{\gamma}\dfrac{4}{\epsilon_{m}}\\
-&= 2\log (\psi T)[1+2+2^{2}+....+2^{\gamma}] + 4[1+2+2^{2}+....+2^{\gamma}]\\
-&= 2\log (\psi T)[2^{\gamma} - 1] + 4[2^{\gamma} - 1]\\
-&< 2\log (\psi T)\sqrt{\dfrac{T}{e}} + 4\sqrt{\dfrac{T}{e}}\\
-&= 2\sqrt{\dfrac{T}{e}}[\log (\psi T) + 2]\\
-&= 4\sqrt{\dfrac{T}{e}}[\log (K T) + 1] \text{, for } \psi=K^{2}T\\
+T_{\gamma} &= K+\sum_{m=0}^{\gamma}\dfrac{2\log(\psi T) + 4\log(\epsilon_{m})}{\epsilon_{m}}\\
+&= K+2\log (\psi T)\sum_{m=0}^{\gamma}\dfrac{1}{\epsilon_{m}} + \sum_{m=0}^{\gamma}\dfrac{4\log (\epsilon_{m})}{\epsilon_{m}}\\
+&< K+2\log (\psi T)\sum_{m=0}^{\gamma}\dfrac{1}{\epsilon_{m}} + \sum_{m=0}^{\gamma}\dfrac{4}{\epsilon_{m}}\\
+&= K+2\log (\psi T)[1+2+2^{2}+....+2^{\gamma}] + 4[1+2+2^{2}+....+2^{\gamma}]\\
+&= K+2\log (\psi T)[2^{\gamma} - 1] + 4[2^{\gamma} - 1]\\
+&< K+2\log (\psi T)\sqrt{\dfrac{T}{e}} + 4\sqrt{\dfrac{T}{e}}\\
+&= K+2\sqrt{\dfrac{T}{e}}[\log (\psi T) + 2]\\
+&= K+4\sqrt{\dfrac{T}{e}}[\log (K T) + 1] \text{, for } \psi=K^{2}T\\
 &< T
 \end{align*}
 
@@ -94,7 +94,7 @@ Applying Chernoff-Hoeffding bound and considering independence of complementary 
   
 Similarly, $\mathbb{P}\lbrace\hat{r}_{i}\leq r_{i} + (\tau + 2c_{m_{i}})\rbrace\leq \dfrac{1}{(\psi  T\epsilon_{m_{i}}^{2})^{4\rho}}$
  
-Summing, the two up, the probability that a sub-optimal arm ${i}$ is not eliminated on or before $m_{i}$-th round based on the \ref{eq:armelim-casea} and \ref{eq:armelim-caseb} elimination condition is  $\bigg(\dfrac{2}{(\psi T\epsilon_{m_{i}}^{2})^{4\rho}}\bigg)$. 
+Summing, the two up, the probability that an arm ${i}$ is not eliminated on or before $m_{i}$-th round based on the \ref{eq:armelim-casea} and \ref{eq:armelim-caseb} elimination condition is  $\bigg(\dfrac{2}{(\psi T\epsilon_{m_{i}}^{2})^{4\rho}}\bigg)$. 
 
 %Also, for \ref{eq:armelim-caseb} elimination condition by applying Chernoff-Hoeffding bound and considering independence of complementary of the two events in \ref{eq:armelim-caseb} we can derive a similar bound that a sub-optimal arm ${i}$ is not eliminated on or before $m_{i}$-th by $\bigg(\dfrac{2}{(\psi T\epsilon_{m_{i}}^{2})^{\rho}}\bigg)$. 
 %
