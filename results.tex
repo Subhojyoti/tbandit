@@ -42,9 +42,9 @@ T_{\gamma} &= K+\sum_{m=0}^{\gamma}\dfrac{2\log(\psi T) + 4\log(\epsilon_{m})}{\
 
 \begin{proof}
 
-According to the algorithm, the number of rounds is $m=\lbrace 0,1,2,.. \gamma\rbrace $ where $\gamma=\big\lfloor \dfrac{1}{2}\log_{2} \dfrac{T}{e}\big\rfloor$. So, $\epsilon_{m}\geq 2^{-\gamma} = \sqrt{\dfrac{e}{T}}$. Also each round $m$ consists of $n_{m} = \dfrac{\log(\psi T \epsilon_{m}^{2})}{\epsilon_{m}}$ timesteps.
+According to the algorithm, the number of rounds is $m=\lbrace 0,1,2,.. M\rbrace $ where $M=\big\lfloor \dfrac{1}{2}\log_{2} \dfrac{T}{e}\big\rfloor$. So, $\epsilon_{m}\geq 2^{-M} = \sqrt{\dfrac{e}{T}}$. Also each round $m$ consists of $|B_{m}|n_{m}$ timesteps where $n_{m} = \dfrac{\log(\psi T \epsilon_{m}^{2})}{\epsilon_{m}}$ and $B_{m}$ is the set of all surviving arms. 
 
-Let $c_{m_{i}}= \sqrt{\dfrac{\rho\log{(\psi T\epsilon_{m}^{2})}}{2 n_{i}}}$ denote the confidence interval, where $n_{i}$ is the number of times an arm $i$ is pulled. Let $A^{'}=\lbrace i\in A|\Delta_{i}^{\tau}\geq b\rbrace$, for $b\geq \sqrt{\frac{e}{T}}$. Let $m_{i}$ be the minimum round that an arm $i$ gets eliminated. So $m_{i}=min\lbrace m| \epsilon_{m}<\frac{\Delta_{i}^{\tau}}{2}\rbrace$. 
+Let $c_{i} = \sqrt{\dfrac{\rho\log{(\psi T\epsilon_{m}^{2})}}{2 n_{i}}}$ denote the confidence interval, where $n_{i}$ is the number of times an arm $i$ is pulled. Let $A^{'}=\lbrace i\in A|\Delta_{i}^{\tau}\geq b\rbrace$, for $b\geq \sqrt{\frac{e}{T}}$. Let $m_{i}$ be the minimum round that an arm $i$ gets eliminated. So $m_{i}=min\lbrace m| \epsilon_{m}<\frac{\Delta_{i}^{\tau}}{2}\rbrace$. 
 %In this proof sub-optimal arms refer to the arms whose $r_{i}$ is lower than the threshold $\tau$.
 
 At the end of any round $m$, for any arm $i$, two cases are possible.
@@ -52,47 +52,48 @@ At the end of any round $m$, for any arm $i$, two cases are possible.
 \subsubsection{\textit{Case a: Some arm i is not eliminated on or before round $m_{i}$}}
 For any arm $i$, if it is eliminated from active set $B_{m}$ then the below two events have to come true,
 \begin{align}
-\hat{r}_{i} + c_{m_{i}} < \tau - c_{m_{i}}, \label{eq:armelim-casea}\\
-\hat{r}_{i} - c_{m_{i}} > \tau + c_{m_{i}}, \label{eq:armelim-caseb}
+\hat{r}_{i} + c_{i} < \tau - c_{i}, \label{eq:armelim-casea}\\
+\hat{r}_{i} - c_{i} > \tau + c_{i}, \label{eq:armelim-caseb}
 \end{align}
 
 For \ref{eq:armelim-casea} we can see that it eliminates arms that have performed poorly and removes them them from $B_{m}$. Similarly, \ref{eq:armelim-caseb} eliminates arms from $B_{m}$ that have performed very well compared to threshold $\tau$.
 
-Each round consist of $n_{m_{i}}$ timesteps and so an arm can be pulled no more than that.  Putting the value of $n_{m_{i}}=\dfrac{2\log{(\psi T\epsilon_{m_{i}}^{2})}}{\epsilon_{m_{i}}}$ in $c_{m_{i}}$,
+Each round consist of $|B_{m_{i}}|n_{m_{i}}$ timesteps and so an arm can be pulled no more than $n_{m_{i}}$ times. This happens because of the following reason. 
 \begin{align*}
-c_{m_{i}}&=\sqrt{\dfrac{\rho\epsilon_{m_{i}}\log (\psi T\epsilon_{m_{i}}^{2})}{2*2 \log(\psi T\epsilon_{m_{i}}^{2})}}\\
+c_{i}&=\sqrt{\dfrac{\rho\epsilon_{m_{i}}\log (\psi T\epsilon_{m_{i}}^{2})}{2 n_{i}}}\\
+&\text{ But $n_{i}\leq n_{m_{i}}$. Putting the value of $n_{m_{i}}=\dfrac{2\log{(\psi T\epsilon_{m_{i}}^{2})}}{\epsilon_{m_{i}}}$ in $c_{i}$,}\\
+&=\sqrt{\dfrac{\rho\epsilon_{m_{i}}\log (\psi T\epsilon_{m_{i}}^{2})}{2*2 \log(\psi T\epsilon_{m_{i}}^{2})}}\\
 & =\dfrac{\sqrt{\rho\epsilon_{m_{i}}}}{2}\\
 & \leq \sqrt{\rho\epsilon_{m_{i}+1}} < \dfrac{\Delta_{i}^{\tau}}{4} \text{, as }\rho\in (0,1].
 \end{align*}
 
-
 Again, for ${i} \in A^{'}$ for \ref{eq:armelim-casea} elimination condition, 
 \begin{align*}
-\hat{r}_{i} + c_{m_{i}}&\leq r_{i} + 2c_{m_{i}} \\
-&= r_{i} + 4c_{m_{i}} - 2c_{m_{i}} \\
-&< r_{i} + \Delta_{i}^{\tau} - 2c_{m_{i}}\\
-&= \tau -2c_{m_{i}} \\
-&\leq \tau - c_{m_{i}}
+\hat{r}_{i} + c_{i}&\leq r_{i} + 2c_{i} \\
+&= r_{i} + 4c_{i} - 2c_{i} \\
+&< r_{i} + \Delta_{i}^{\tau} - 2c_{i}\\
+&= \tau -2c_{i} \\
+&\leq \tau - c_{i}
 \end{align*}
 
 Also, for ${i} \in A^{'}$ for \ref{eq:armelim-caseb} elimination condition, 
 \begin{align*}
-\hat{r}_{i} - c_{m_{i}}&\geq r_{i} - 2c_{m_{i}} \\
-&= r_{i} - 4c_{m_{i}} + 2c_{m_{i}} \\
-&> r_{i} - \Delta_{i}^{\tau} + 2c_{m_{i}}\\
-&\geq \tau + 2c_{m_{i}} \\
-&\geq \tau + c_{m_{i}}
+\hat{r}_{i} - c_{i}&\geq r_{i} - 2c_{i} \\
+&= r_{i} - 4c_{i} + 2c_{i} \\
+&> r_{i} - \Delta_{i}^{\tau} + 2c_{i}\\
+&\geq \tau + 2c_{i} \\
+&\geq \tau + c_{i}
 \end{align*}
 
-Applying Chernoff-Hoeffding bound and considering independence of complementary of the two events in \ref{eq:armelim-casea},
+Since, arm elimination condition is being checked at every timestep, in the $m_{i}$-th round as soon as $n_{i}=n_{m_{i}}$, arm $i$ gets eliminated. Applying Chernoff-Hoeffding bound and considering independence of complementary of the two events in \ref{eq:armelim-casea},
   \begin{align*}
-\mathbb{P}\lbrace\hat{r}_{i}\geq r_{i} - (\tau + 2c_{m_{i}})\rbrace &\leq exp(-2(\tau + 2c_{m_{i}})^{2}n_{m_{i}})\\
-&\leq exp(-2(2\tau c_{m_{i}})^{2}n_{m_{i}}) \text{ , as} (a+b)^{2} \geq (ab)^{2} \text{ for } a,b\in[0,1]\\
-&\leq exp(-8 * \dfrac{\rho\log (\psi T\epsilon_{m_{i}}^{2})}{2 n_{m_{i}}} *n_{m_{i}})\\
+\mathbb{P}\lbrace\hat{r}_{i}\geq r_{i} - (\tau + 2c_{i})\rbrace &\leq exp(-2(\tau + 2c_{i})^{2}n_{i})\\
+&\leq exp(-2(2\tau c_{i})^{2}n_{i}) \text{ , as} (a+b)^{2} \geq (ab)^{2} \text{ for } a,b\in[0,1]\\
+&\leq exp(-8 * \dfrac{\rho\log (\psi T\epsilon_{m_{i}}^{2})}{2 n_{i}} *n_{i})\\
 &\leq \dfrac{1}{(\psi T\epsilon_{m_{i}}^{2})^{4\rho}}   
   \end{align*}
   
-Similarly, $\mathbb{P}\lbrace\hat{r}_{i}\leq r_{i} + (\tau + 2c_{m_{i}})\rbrace\leq \dfrac{1}{(\psi  T\epsilon_{m_{i}}^{2})^{4\rho}}$
+Similarly, $\mathbb{P}\lbrace\hat{r}_{i}\leq r_{i} + (\tau + 2c_{i})\rbrace\leq \dfrac{1}{(\psi  T\epsilon_{m_{i}}^{2})^{4\rho}}$
  
 Summing, the two up, the probability that an arm ${i}$ is not eliminated on or before $m_{i}$-th round based on the \ref{eq:armelim-casea} and \ref{eq:armelim-caseb} elimination condition is  $\bigg(\dfrac{2}{(\psi T\epsilon_{m_{i}}^{2})^{4\rho}}\bigg)$. 
 

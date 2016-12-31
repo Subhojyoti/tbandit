@@ -1,0 +1,15 @@
+\BOOKMARK [1][-]{section.0.1}{Introduction}{}
+\BOOKMARK [1][-]{section.0.2}{Motivation}{}
+\BOOKMARK [1][-]{section.0.3}{Contribution}{}
+\BOOKMARK [1][-]{section.0.4}{Related Works and Previous Results}{}
+\BOOKMARK [1][-]{section.0.5}{Notation Used and Assumptions}{}
+\BOOKMARK [1][-]{section.0.6}{Augmented UCB}{}
+\BOOKMARK [1][-]{section.0.7}{Main Results}{}
+\BOOKMARK [2][-]{subsection.0.7.1}{Problem Complexity}{section.0.7}
+\BOOKMARK [2][-]{subsection.0.7.2}{Lemma 1}{section.0.7}
+\BOOKMARK [2][-]{subsection.0.7.3}{Theorem 1}{section.0.7}
+\BOOKMARK [3][-]{subsubsection.0.7.3.1}{Case a: Some arm i is not eliminated on or before round mi}{subsection.0.7.3}
+\BOOKMARK [3][-]{subsubsection.0.7.3.2}{Case b: For any arm i, it is either eliminated on or before round mi or there is no arm above .}{subsection.0.7.3}
+\BOOKMARK [1][-]{section.0.8}{Experimental Run:}{}
+\BOOKMARK [1][-]{section.0.9}{Conclusion and Future work}{}
+\BOOKMARK [1][-]{section.0.10}{Appendix}{}
