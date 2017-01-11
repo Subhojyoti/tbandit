@@ -9,34 +9,6 @@ H^{\tau} = \sum_{i=1}^{K}\dfrac{1}{(\Delta_{i}^{\tau})^{2}} \text{, where } \Del
 
 This is same as the problem complexity defined in \cite{locatelli2016optimal} for the thresholding bandit problem and is similar to the problem complexity defined in \cite{audibert2010best} for single best arm identification.
 
-%\subsection{Lemma 1} For a given horizon $T$ and $\psi=K^{2}T$, $T_{\gamma} = \sum_{m=0}^{\gamma}\dfrac{2\log(\psi T \epsilon_{m}^{2})}{\epsilon_{m}}$ is less than the allocated budget $T$, where $\gamma=0,1,...,\big\lfloor \dfrac{1}{2}\log_{2} \dfrac{T}{e}\big\rfloor$ and $\epsilon_{m}$ is initialized at $1$ and halved after very round. 
-%
-%\begin{proof}
-%For any arbitrary round $m$, we know that the number of pulls allocated for that round is 
-%$n_{m} = \dfrac{2\log(\psi T \epsilon_{m}^{2})}{\epsilon_{m}}$. Now, 
-%
-%\begin{align*}
-%n_{m} &= \dfrac{2\log(\psi T \epsilon_{m}^{2})}{\epsilon_{m}}
-%= \dfrac{2\log(\psi T) + 2\log(\epsilon_{m}^{2})}{\epsilon_{m}}
-%\end{align*}
-%
-%Taking summation over all rounds for $m=0,1,...,\gamma$. 
-%
-%\begin{align*}
-%T_{\gamma} &= K+\sum_{m=0}^{\gamma}\dfrac{2\log(\psi T) + 4\log(\epsilon_{m})}{\epsilon_{m}}\\
-%&= K+2\log (\psi T)\sum_{m=0}^{\gamma}\dfrac{1}{\epsilon_{m}} + \sum_{m=0}^{\gamma}\dfrac{4\log (\epsilon_{m})}{\epsilon_{m}}\\
-%&< K+2\log (\psi T)\sum_{m=0}^{\gamma}\dfrac{1}{\epsilon_{m}} + \sum_{m=0}^{\gamma}\dfrac{4}{\epsilon_{m}}\\
-%&= K+2\log (\psi T)[1+2+2^{2}+....+2^{\gamma}] + 4[1+2+2^{2}+....+2^{\gamma}]\\
-%&= K+2\log (\psi T)[2^{\gamma} - 1] + 4[2^{\gamma} - 1]\\
-%&< K+2\log (\psi T)\sqrt{\dfrac{T}{e}} + 4\sqrt{\dfrac{T}{e}}\\
-%&= K+2\sqrt{\dfrac{T}{e}}[\log (\psi T) + 2]\\
-%&= K+4\sqrt{\dfrac{T}{e}}[\log (K T) + 1] \text{, for } \psi=K^{2}T\\
-%&< T
-%\end{align*}
-%
-%
-%\end{proof}
-
 
 \subsection{Theorem 1}
 
@@ -55,9 +27,9 @@ with probability at least $1-\eta$, where $c_{0}>0$ is a constant.
 
 \begin{proof}
 
-According to the algorithm, the number of rounds is $m=\lbrace 0,1,2,.. M\rbrace $ where $M=\big\lfloor \dfrac{1}{2}\log_{2} \dfrac{T}{e}\big\rfloor$. So, $\epsilon_{m}\geq 2^{-M} = \sqrt{\dfrac{e}{T}}$. Also each round $m$ consists of $|B_{m}|n_{m}$ timesteps where $n_{m} = \dfrac{\log(\psi T \epsilon_{m}^{2})}{\epsilon_{m}}$ and $B_{m}$ is the set of all surviving arms. 
+According to the algorithm, the number of rounds is $m=\lbrace 0,1,2,.. M\rbrace $ where $M=\big\lfloor \dfrac{1}{2}\log_{2} \dfrac{T}{e}\big\rfloor$. So, $\epsilon_{m}\geq 2^{-M} = \sqrt{\dfrac{e}{T}}$. Also each round $m$ consists of $|B_{m}|\ell_{m}$ timesteps where $\ell_{m} = \dfrac{\log(\psi T \epsilon_{m}^{2})}{\epsilon_{m}}$ and $B_{m}$ is the set of all surviving arms. 
 
-Let $c_{i} = \sqrt{\dfrac{\rho\log{(\psi T\epsilon_{m}^{2})}}{2 n_{i}}}$ denote the confidence interval, where $n_{i}$ is the number of times an arm $i$ is pulled. Let $A^{'}=\lbrace i\in A|\Delta_{i}^{\tau}\geq b\rbrace$, for $b\geq \sqrt{\frac{e}{T}}$. Let $m_{i}$ be the minimum round that an arm $i$ gets eliminated. So $m_{i}=min\lbrace m| \epsilon_{m}<\frac{\Delta_{i}^{\tau}}{2}\rbrace$. 
+Let $c_{i} = \sqrt{\dfrac{\rho\log{(\psi T\epsilon_{m}^{2})}}{2 n_{i}}}$ denote the confidence interval, where $n_{i}$ is the number of times an arm $i$ is pulled. Let $A^{'}=\lbrace i\in A|\Delta_{i}^{\tau}\geq b\rbrace$, for $b\geq \sqrt{\frac{e}{T}}$. Let $m_{i}$ be the minimum round that an arm $i$ gets eliminated. So $m_{i}=min\lbrace m| \sqrt{\rho\epsilon_{m}}<\frac{\Delta_{i}^{\tau}}{2}\rbrace$. 
 %In this proof sub-optimal arms refer to the arms whose $r_{i}$ is lower than the threshold $\tau$.
 
 At the end of any round $m$, for any arm $i$, two cases are possible.
@@ -71,7 +43,7 @@ For any arm $i$, if it is eliminated from active set $B_{m}$ then the below two 
 
 For \ref{eq:armelim-casea} we can see that it eliminates arms that have performed poorly and removes them them from $B_{m}$. Similarly, \ref{eq:armelim-caseb} eliminates arms from $B_{m}$ that have performed very well compared to threshold $\tau$.
 
-Each round consist of $|B_{m_{i}}|n_{m}$ timesteps. In the $m_{i}$-th round an arm $i$ can be pulled no more than $n_{m_{i}}$ times. So when $n_{i}=n_{m_{i}}$, putting the value of $n_{m_{i}}=\dfrac{2\log{(\psi T\epsilon_{m_{i}}^{2})}}{\epsilon_{m_{i}}}$ in $c_{i}$, 
+Each round consist of $|B_{m_{i}}|\ell_{m}$ timesteps. In the $m_{i}$-th round an arm $i$ can be pulled no more than $n_{m_{i}}$ times. So when $n_{i}=\ell_{m_{i}}$, putting the value of $\ell_{m_{i}}=\dfrac{2\log{(\psi T\epsilon_{m_{i}}^{2})}}{\epsilon_{m_{i}}}$ in $c_{i}$, 
 \begin{align*}
 c_{i}&=\sqrt{\dfrac{\rho\epsilon_{m_{i}}\log (\psi T\epsilon_{m_{i}}^{2})}{2 n_{i}}}\\
 &=\sqrt{\dfrac{\rho\epsilon_{m_{i}}\log (\psi T\epsilon_{m_{i}}^{2})}{2*2 \log(\psi T\epsilon_{m_{i}}^{2})}}\\
@@ -114,7 +86,7 @@ Summing, the two up, the probability that an arm ${i}$ is not eliminated on or b
 %So the total probability that an arm $i$ is eliminated from $B_{m_{i}}$ is bounded by $\bigg(\dfrac{4}{(\psi T\epsilon_{m_{i}}^{2})^{\rho}}\bigg)$. 
 
 \begin{enumerate}
-\item \emph{Fact 1:} From above we know that the probability of elimination of a sub-optimal arm in the $m_{i}$-th round being not eliminated is bounded above by $\bigg(\dfrac{2}{(\psi T\epsilon_{m_{i}}^{2})^{4\tau^{2}\rho}}\bigg)$.
+\item \emph{Fact 1:} From above we know that the probability of elimination of a sub-optimal arm in the $m_{i}$-th round being not eliminated is bounded above by $P_{m_{i}}\leq\bigg(\dfrac{2}{(\psi T\epsilon_{m_{i}}^{2})^{4\tau^{2}\rho}}\bigg)$.
 \item \emph{Fact 2:} From \cite{tolpin2012mcts} we know that, for every $0<\eta <1$ and $\gamma > 1$, there exists $t$ such that for all $T>t$ the probability of a sub-optimal arm $i$ being sampled in the $m_{i}$-th round is bounded by $P_{m}\leq 2\gamma \exp(-c_{m}\dfrac{\sqrt{T}}{2})$, where $c_{m}=\dfrac{c_{0}}{2^{m}}$.
 \end{enumerate}
 
@@ -124,10 +96,10 @@ We start with an upper bound on the number of plays $\delta_{m_{i}}$ in the $m_{
 |B_{m_{i}}|=\bigg(\dfrac{2K}{(\psi T\epsilon_{m_{i}}^{2})^{4\tau^{2}\rho}}\bigg) 
 \end{align*}     
 
-Again in AugUCB, we know that the number of pulls allocated for each surviving arm $i$ in the $m_{i}$-th round is $n_{m_{i}}=\dfrac{2\log (\psi T \epsilon_{m_{i}}^{2})}{\epsilon_{m_{i}}}$. Therefore, the proportion of plays $\delta_{m_{i}}$ in the $m_{i}$-th round can be written as,
+Again in AugUCB, we know that the number of pulls allocated for each surviving arm $i$ in the $m_{i}$-th round is $\ell_{m_{i}}=\dfrac{2\log (\psi T \epsilon_{m_{i}}^{2})}{\epsilon_{m_{i}}}$. Therefore, the proportion of plays $\delta_{m_{i}}$ in the $m_{i}$-th round can be written as,
 
 \begin{align*}
-\delta_{m_{i}}=\dfrac{(|B_{m_{i}}|.n_{m_{i}})}{T} &\leq \bigg(\dfrac{1}{T}.\dfrac{2K}{(\psi T\epsilon_{m_{i}}^{2})^{4\tau^{2}\rho}}.\dfrac{2\log (\psi T \epsilon_{m_{i}}^{2})}{\epsilon_{m_{i}}}\bigg)\\
+\delta_{m_{i}}=\dfrac{(|B_{m_{i}}|.\ell_{m_{i}})}{T} &\leq \bigg(\dfrac{1}{T}.\dfrac{2K}{(\psi T\epsilon_{m_{i}}^{2})^{4\tau^{2}\rho}}.\dfrac{2\log (\psi T \epsilon_{m_{i}}^{2})}{\epsilon_{m_{i}}}\bigg)\\
 & \leq \bigg(\dfrac{4K\log (\psi T \epsilon_{m_{i}}^{2})}{T\epsilon_{m_{i}}(\psi T\epsilon_{m_{i}}^{2})^{4\tau^{2}\rho}}\bigg)
 \end{align*}
 
@@ -142,15 +114,15 @@ Now, $\epsilon_{m_{i}}\geq \sqrt{\dfrac{e}{T}}$ for all rounds $m=0,1,2,...,\big
 Now, applying the bound from Fact $2$, we can show that the probability of the sub-optimal arm $i$ being pulled is bounded above by,
 
 \begin{align*}
-P_{i} = \sum_{m=0}^{M} \delta_{m}.P_{m} &\leq \sum_{m=0}^{M} \bigg\lbrace\bigg(\dfrac{4Ke^{\frac{1}{2}-4\tau^{2}\rho}\log (\psi T )}{T^{\frac{3}{2}}(\psi T^2)^{\rho}}\bigg)\\
-& \leq M.\bigg\lbrace\bigg(\dfrac{4Ke^{\frac{1}{2}-4\tau^{2}\rho}\log (\psi T )}{T^{\frac{3}{2}}(\psi T^2)^{\rho}}\bigg)\bigg\rbrace 2\gamma \exp(-\dfrac{c_{0}\sqrt{T}}{2^{M}.4})\\
+P_{i} = \sum_{m=0}^{M} \delta_{m}.P_{m_{i}} &\leq \sum_{m=0}^{M} \bigg\lbrace\bigg(\dfrac{4Ke^{\frac{1}{2}-4\tau^{2}\rho}\log (\psi T )}{T^{\frac{3}{2}}(\psi T^2)^{\rho}}\bigg)\\
+& \leq M.\bigg\lbrace\bigg(\dfrac{4Ke^{\frac{1}{2}-4\tau^{2}\rho}\log (\psi T )}{T^{\frac{3}{2}}(\psi T^2)^{4\tau^{2}\rho}}\bigg)\bigg\rbrace 2\gamma \exp(-\dfrac{c_{0}\sqrt{T}}{2^{M}.4})\\
 & \leq \log_{2}\dfrac{T}{e}\gamma \exp(\dfrac{c_{0}\sqrt{e}}{4})\bigg\lbrace\bigg(\dfrac{4Ke^{\frac{1}{2}-4\tau^{2}\rho}\log (\psi T )}{T^{\frac{3}{2}}(\psi T^2)^{4\tau^{2}\rho}}\bigg)\bigg\rbrace \text{, for $M=\big \lfloor \dfrac{1}{2}\log_{2} \dfrac{T}{e}\big\rfloor$}
 \end{align*}
 
 Therefore we can say that with probability $P_{i}$, all arms $i$ above $\dfrac{\Delta_{i}^{\tau}}{2}$ are accepted and all arms $i$ below $\dfrac{\Delta_{i}^{\tau}}{2}$ are rejected. Hence, the simple regret of AugUCB is upper bounded by,
 
 \begin{align*}
-SR_{AugUCB} &= \sum_{i=1}^{K} \Delta_{i}^{\tau}. P_{i} \leq \sum_{i=1}^{K} \Delta_{i}. \log_{2}\dfrac{T}{e}\gamma \exp(\dfrac{c_{0}\sqrt{e}}{4})\bigg\lbrace\bigg(\dfrac{4Ke^{\frac{1}{2}-4\tau^{2}\rho}\log (\psi T )}{T^{\frac{3}{2}}(\psi T^2)^{4\tau^{2}\rho}}\bigg) \bigg\rbrace \\
+SR_{AugUCB} &= \sum_{i=1}^{K} \Delta_{i}^{\tau}. P_{i} \leq \sum_{i=1}^{K} \Delta_{i}^{\tau}. \log_{2}\dfrac{T}{e}\gamma \exp(\dfrac{c_{0}\sqrt{e}}{4})\bigg\lbrace\bigg(\dfrac{4Ke^{\frac{1}{2}-4\tau^{2}\rho}\log (\psi T )}{T^{\frac{3}{2}}(\psi T^2)^{4\tau^{2}\rho}}\bigg) \bigg\rbrace \\
 &\leq 4K \gamma \exp(\frac{1}{2}- 4\tau^{2}\rho -\dfrac{c_{0}\sqrt{e}}{4}) \sum_{i=1}^{K} \Delta_{i}^{\tau} \bigg(\dfrac{\log (\psi T )}{T^{\frac{3}{2}}(\psi T^2)^{4\tau^{2}\rho}}\bigg) 
 \end{align*}
 
