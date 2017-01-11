@@ -40,6 +40,19 @@ This is same as the problem complexity defined in \cite{locatelli2016optimal} fo
 
 \subsection{Theorem 1}
 
+\begin{theorem}
+\label{Result:Theorem:1}
+
+For every $0<\eta <1$ and $\gamma > 1$, there exists time $t$ such that for all $T>t$ the simple regret of AugUCB is upper bounded by,
+\begin{align*}
+SR_{AugUCB} \leq 4K \gamma \exp(\frac{1}{2}- 4\tau^{2}\rho -\dfrac{c_{0}\sqrt{e}}{4}) \sum_{i=1}^{K} \Delta_{i}^{\tau} \bigg(\dfrac{\log (\psi T )}{T^{\frac{3}{2}}(\psi T^2)^{4\tau^{2}\rho}}\bigg)
+\end{align*}
+
+with probability at least $1-\eta$, where $c_{0}>0$ is a constant.
+
+\end{theorem}
+
+
 \begin{proof}
 
 According to the algorithm, the number of rounds is $m=\lbrace 0,1,2,.. M\rbrace $ where $M=\big\lfloor \dfrac{1}{2}\log_{2} \dfrac{T}{e}\big\rfloor$. So, $\epsilon_{m}\geq 2^{-M} = \sqrt{\dfrac{e}{T}}$. Also each round $m$ consists of $|B_{m}|n_{m}$ timesteps where $n_{m} = \dfrac{\log(\psi T \epsilon_{m}^{2})}{\epsilon_{m}}$ and $B_{m}$ is the set of all surviving arms. 
@@ -100,38 +113,102 @@ Summing, the two up, the probability that an arm ${i}$ is not eliminated on or b
 %
 %So the total probability that an arm $i$ is eliminated from $B_{m_{i}}$ is bounded by $\bigg(\dfrac{4}{(\psi T\epsilon_{m_{i}}^{2})^{\rho}}\bigg)$. 
 
-\subsubsection{\textit{Case b: For any arm $i$, it is either eliminated on or before round $m_{i}$ or there is no arm above $\tau$.}}
+\begin{enumerate}
+\item \emph{Fact 1:} From above we know that the probability of elimination of a sub-optimal arm in the $m_{i}$-th round being not eliminated is bounded above by $\bigg(\dfrac{2}{(\psi T\epsilon_{m_{i}}^{2})^{4\tau^{2}\rho}}\bigg)$.
+\item \emph{Fact 2:} From \cite{tolpin2012mcts} we know that, for every $0<\eta <1$ and $\gamma > 1$, there exists $t$ such that for all $T>t$ the probability of a sub-optimal arm $i$ being sampled in the $m_{i}$-th round is bounded by $P_{m}\leq 2\gamma \exp(-c_{m}\dfrac{\sqrt{T}}{2})$, where $c_{m}=\dfrac{c_{0}}{2^{m}}$.
+\end{enumerate}
 
-
-	For any round $m$, for any timestep $t\in m$ an arm $i\in B_{m}$ gets pulled if,
-\begin{align*}
-|\hat{r}_{i} - \tau| - c_{i} < |\hat{r}_{k} - \tau| - c_{k} \text{, } \forall k\in B_{m}
-\end{align*}
-
-Now from reverse triangle inequality,
-\begin{align}
-|\hat{r}_{k}(t) - r_{k}|&=|(\hat{r}_{k}(t)-\tau) - (r_{k}-\tau)|\\
-&\geq ||\hat{r}_{k}(t)-\tau|-|(r_{k}-\tau)||\\
-&\geq |\hat{\Delta}_{k}^{\tau}(t) - \Delta_{k}^{\tau}| \label{rev-triangle}
-\end{align}
-
-Also, from Case a, we know that for any arm $i$, in round $m_{i}$
-
-\begin{align}
-|\hat{r}_{i} - r_{i}| \leq c_{m_{i}} =  \sqrt{\dfrac{\rho\log{(\psi T\epsilon_{m}^{2})}}{2 n_{i}}}  \label{bound-1}
-\end{align}
-
-Now, combining \ref{rev-triangle} and \ref{bound-1} we can see that,
+We start with an upper bound on the number of plays $\delta_{m_{i}}$ in the $m_{i}$-th round divided by the total number of plays $T$. We know  from Fact $1$  that the total number of arms surviving in the $m_{i}$-th arm is, 
 
 \begin{align*}
-&|\hat{\Delta}_{i}^{\tau}(t) - \Delta_{i}^{\tau}| \leq c_{m_{i}}\\
-&\Rightarrow \Delta_{i}^{\tau} - c_{m_{i}} \leq \hat{\Delta}_{i}^{\tau}(t) \leq \Delta_{i}^{\tau} +c_{m_{i}}
-\end{align*}
+|B_{m_{i}}|=\bigg(\dfrac{2K}{(\psi T\epsilon_{m_{i}}^{2})^{4\tau^{2}\rho}}\bigg) 
+\end{align*}     
 
-Since, at time $t$ in round $m_{i}$ the arm $i$ is pulled, so,
+Again in AugUCB, we know that the number of pulls allocated for each surviving arm $i$ in the $m_{i}$-th round is $n_{m_{i}}=\dfrac{2\log (\psi T \epsilon_{m_{i}}^{2})}{\epsilon_{m_{i}}}$. Therefore, the proportion of plays $\delta_{m_{i}}$ in the $m_{i}$-th round can be written as,
 
 \begin{align*}
-\hat{\Delta}_{i}^{\tau} - c_{i} < \hat{\Delta}_{k}^{\tau} - c_{k}, \forall k\in A'
+\delta_{m_{i}}=\dfrac{(|B_{m_{i}}|.n_{m_{i}})}{T} &\leq \bigg(\dfrac{1}{T}.\dfrac{2K}{(\psi T\epsilon_{m_{i}}^{2})^{4\tau^{2}\rho}}.\dfrac{2\log (\psi T \epsilon_{m_{i}}^{2})}{\epsilon_{m_{i}}}\bigg)\\
+& \leq \bigg(\dfrac{4K\log (\psi T \epsilon_{m_{i}}^{2})}{T\epsilon_{m_{i}}(\psi T\epsilon_{m_{i}}^{2})^{4\tau^{2}\rho}}\bigg)
 \end{align*}
+
+Now, $\epsilon_{m_{i}}\geq \sqrt{\dfrac{e}{T}}$ for all rounds $m=0,1,2,...,\big \lfloor \dfrac{1}{2}\log_{2} \dfrac{T}{e}\big\rfloor$.
+
+\begin{align*}
+\delta_{m_{i}} &\leq \bigg(\dfrac{4K\log (\psi T \epsilon_{m_{i}}^{2})}{T\epsilon_{m_{i}}(\psi T\epsilon_{m_{i}}^{2})^{4\tau^{2}\rho}}\bigg)\\
+& \leq \bigg(\dfrac{4K\log (\psi T )}{T\epsilon_{M}(\psi T\epsilon_{M}^{2})^{\rho}}\bigg)\\
+& \leq \bigg(\dfrac{4Ke^{\frac{1}{2}-4\tau^{2}\rho}\log (\psi T )}{T^{\frac{3}{2}}(\psi T^2)^{4\tau^{2}\rho}}\bigg) 
+\end{align*}
+
+Now, applying the bound from Fact $2$, we can show that the probability of the sub-optimal arm $i$ being pulled is bounded above by,
+
+\begin{align*}
+P_{i} = \sum_{m=0}^{M} \delta_{m}.P_{m} &\leq \sum_{m=0}^{M} \bigg\lbrace\bigg(\dfrac{4Ke^{\frac{1}{2}-4\tau^{2}\rho}\log (\psi T )}{T^{\frac{3}{2}}(\psi T^2)^{\rho}}\bigg)\\
+& \leq M.\bigg\lbrace\bigg(\dfrac{4Ke^{\frac{1}{2}-4\tau^{2}\rho}\log (\psi T )}{T^{\frac{3}{2}}(\psi T^2)^{\rho}}\bigg)\bigg\rbrace 2\gamma \exp(-\dfrac{c_{0}\sqrt{T}}{2^{M}.4})\\
+& \leq \log_{2}\dfrac{T}{e}\gamma \exp(\dfrac{c_{0}\sqrt{e}}{4})\bigg\lbrace\bigg(\dfrac{4Ke^{\frac{1}{2}-4\tau^{2}\rho}\log (\psi T )}{T^{\frac{3}{2}}(\psi T^2)^{4\tau^{2}\rho}}\bigg)\bigg\rbrace \text{, for $M=\big \lfloor \dfrac{1}{2}\log_{2} \dfrac{T}{e}\big\rfloor$}
+\end{align*}
+
+Therefore we can say that with probability $P_{i}$, all arms $i$ above $\dfrac{\Delta_{i}^{\tau}}{2}$ are accepted and all arms $i$ below $\dfrac{\Delta_{i}^{\tau}}{2}$ are rejected. Hence, the simple regret of AugUCB is upper bounded by,
+
+\begin{align*}
+SR_{AugUCB} &= \sum_{i=1}^{K} \Delta_{i}^{\tau}. P_{i} \leq \sum_{i=1}^{K} \Delta_{i}. \log_{2}\dfrac{T}{e}\gamma \exp(\dfrac{c_{0}\sqrt{e}}{4})\bigg\lbrace\bigg(\dfrac{4Ke^{\frac{1}{2}-4\tau^{2}\rho}\log (\psi T )}{T^{\frac{3}{2}}(\psi T^2)^{4\tau^{2}\rho}}\bigg) \bigg\rbrace \\
+&\leq 4K \gamma \exp(\frac{1}{2}- 4\tau^{2}\rho -\dfrac{c_{0}\sqrt{e}}{4}) \sum_{i=1}^{K} \Delta_{i}^{\tau} \bigg(\dfrac{\log (\psi T )}{T^{\frac{3}{2}}(\psi T^2)^{4\tau^{2}\rho}}\bigg) 
+\end{align*}
+
+%
+%\subsubsection{\textit{Case b: For any arm $i$, it is either eliminated on or before round $m_{i}$ or there is no arm above $\tau$.}}
+%
+%
+%	For any round $m$, for any timestep $t\in m$ an arm $i\in B_{m}$ gets pulled if,
+%\begin{align*}
+%|\hat{r}_{i} - \tau| - c_{i} < |\hat{r}_{k} - \tau| - c_{k} \text{, } \forall k\in B_{m}
+%\end{align*}
+%
+%Now from reverse triangle inequality,
+%\begin{align}
+%|\hat{r}_{k}(t) - r_{k}|&=|(\hat{r}_{k}(t)-\tau) - (r_{k}-\tau)|\\
+%&\geq ||\hat{r}_{k}(t)-\tau|-|(r_{k}-\tau)||\\
+%&\geq |\hat{\Delta}_{k}^{\tau}(t) - \Delta_{k}^{\tau}| \label{rev-triangle}
+%\end{align}
+%
+%Also, from Case a, we know that for any arm $i$, in round $m_{i}$
+%
+%\begin{align}
+%|\hat{r}_{i} - r_{i}| \leq c_{m_{i}} =  \sqrt{\dfrac{\rho\log{(\psi T\epsilon_{m}^{2})}}{2 n_{i}}}  \label{bound-1}
+%\end{align}
+%
+%Now, combining \ref{rev-triangle} and \ref{bound-1} we can see that,
+%
+%\begin{align*}
+%&|\hat{\Delta}_{i}^{\tau}(t) - \Delta_{i}^{\tau}| \leq c_{m_{i}}\\
+%&\Rightarrow \Delta_{i}^{\tau} - c_{m_{i}} \leq \hat{\Delta}_{i}^{\tau}(t) \leq \Delta_{i}^{\tau} +c_{m_{i}}
+%\end{align*}
+%
+%Since, at time $t$ in round $m_{i}$ the arm $i$ is pulled, so,
+%
+%\begin{align*}
+%\hat{\Delta}_{i}^{\tau} - c_{i} < \hat{\Delta}_{k}^{\tau} - c_{k}, \forall k\in A'
+%\end{align*}
+
+\end{proof}
+
+	Next we specialize the result of Theorem \ref{Result:Theorem:1} in Corollary \ref{Result:Corollary:1}.
+
+\subsection{Corollary 2}
+
+
+\begin{corollary}
+\label{Result:Corollary:1}
+For $\psi=\dfrac{T}{\log (K)}$ and $\rho=\frac{1}{8\tau^{2}}$, the simple regret of AugUCB is given by,
+\begin{align*}
+SR_{EClusUCB} \leq  8K \gamma \exp(-\dfrac{c_{0}\sqrt{e}}{4}) \sum_{i=1}^{K} \Delta_{i}  \bigg(\dfrac{2 \sqrt{\log (K)} \log (\dfrac{T}{\sqrt{\log (K)}} )}{T^{3}}\bigg)
+\end{align*}
+\end{corollary}
+
+\begin{proof}
+Putting $\psi=\dfrac{T}{\log (K)}$ and $\rho=\frac{1}{8\tau^{2}}$ in the simple regret obtained in Theorem \ref{Result:Theorem:1}, we get
+\begin{align*}
+SR_{AugUCB} &\leq 8K \gamma \exp(-\dfrac{c_{0}\sqrt{e}}{4}) \sum_{i=1}^{K} \Delta_{i}^{\tau}  \bigg(\dfrac{\log (\dfrac{T^{2}}{\log (K)} )}{T^{\frac{3}{2}}(\frac{T^3}{\log (K)})^{\frac{1}{2}}}\bigg)\\
+& \leq 8K \gamma \exp(-\dfrac{c_{0}\sqrt{e}}{4}) \sum_{i=1}^{K} \Delta_{i}  \bigg(\dfrac{2 \sqrt{\log (K)} \log (\dfrac{T}{\sqrt{\log (K)}} )}{T^{3}}\bigg)
+\end{align*} 
 
 \end{proof}

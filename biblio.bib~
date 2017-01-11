@@ -277,10 +277,3 @@
   year={2016}
 }
 
-@inproceedings{tolpin2012mcts,
-  title={MCTS Based on Simple Regret.},
-  author={Tolpin, David and Shimony, Solomon Eyal},
-  booktitle={AAAI},
-  year={2012}
-}
-
