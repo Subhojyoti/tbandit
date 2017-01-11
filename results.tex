@@ -9,33 +9,33 @@ H^{\tau} = \sum_{i=1}^{K}\dfrac{1}{(\Delta_{i}^{\tau})^{2}} \text{, where } \Del
 
 This is same as the problem complexity defined in \cite{locatelli2016optimal} for the thresholding bandit problem and is similar to the problem complexity defined in \cite{audibert2010best} for single best arm identification.
 
-\subsection{Lemma 1} For a given horizon $T$ and $\psi=K^{2}T$, $T_{\gamma} = \sum_{m=0}^{\gamma}\dfrac{2\log(\psi T \epsilon_{m}^{2})}{\epsilon_{m}}$ is less than the allocated budget $T$, where $\gamma=0,1,...,\big\lfloor \dfrac{1}{2}\log_{2} \dfrac{T}{e}\big\rfloor$ and $\epsilon_{m}$ is initialized at $1$ and halved after very round. 
-
-\begin{proof}
-For any arbitrary round $m$, we know that the number of pulls allocated for that round is 
-$n_{m} = \dfrac{2\log(\psi T \epsilon_{m}^{2})}{\epsilon_{m}}$. Now, 
-
-\begin{align*}
-n_{m} &= \dfrac{2\log(\psi T \epsilon_{m}^{2})}{\epsilon_{m}}
-= \dfrac{2\log(\psi T) + 2\log(\epsilon_{m}^{2})}{\epsilon_{m}}
-\end{align*}
-
-Taking summation over all rounds for $m=0,1,...,\gamma$. 
-
-\begin{align*}
-T_{\gamma} &= K+\sum_{m=0}^{\gamma}\dfrac{2\log(\psi T) + 4\log(\epsilon_{m})}{\epsilon_{m}}\\
-&= K+2\log (\psi T)\sum_{m=0}^{\gamma}\dfrac{1}{\epsilon_{m}} + \sum_{m=0}^{\gamma}\dfrac{4\log (\epsilon_{m})}{\epsilon_{m}}\\
-&< K+2\log (\psi T)\sum_{m=0}^{\gamma}\dfrac{1}{\epsilon_{m}} + \sum_{m=0}^{\gamma}\dfrac{4}{\epsilon_{m}}\\
-&= K+2\log (\psi T)[1+2+2^{2}+....+2^{\gamma}] + 4[1+2+2^{2}+....+2^{\gamma}]\\
-&= K+2\log (\psi T)[2^{\gamma} - 1] + 4[2^{\gamma} - 1]\\
-&< K+2\log (\psi T)\sqrt{\dfrac{T}{e}} + 4\sqrt{\dfrac{T}{e}}\\
-&= K+2\sqrt{\dfrac{T}{e}}[\log (\psi T) + 2]\\
-&= K+4\sqrt{\dfrac{T}{e}}[\log (K T) + 1] \text{, for } \psi=K^{2}T\\
-&< T
-\end{align*}
-
-
-\end{proof}
+%\subsection{Lemma 1} For a given horizon $T$ and $\psi=K^{2}T$, $T_{\gamma} = \sum_{m=0}^{\gamma}\dfrac{2\log(\psi T \epsilon_{m}^{2})}{\epsilon_{m}}$ is less than the allocated budget $T$, where $\gamma=0,1,...,\big\lfloor \dfrac{1}{2}\log_{2} \dfrac{T}{e}\big\rfloor$ and $\epsilon_{m}$ is initialized at $1$ and halved after very round. 
+%
+%\begin{proof}
+%For any arbitrary round $m$, we know that the number of pulls allocated for that round is 
+%$n_{m} = \dfrac{2\log(\psi T \epsilon_{m}^{2})}{\epsilon_{m}}$. Now, 
+%
+%\begin{align*}
+%n_{m} &= \dfrac{2\log(\psi T \epsilon_{m}^{2})}{\epsilon_{m}}
+%= \dfrac{2\log(\psi T) + 2\log(\epsilon_{m}^{2})}{\epsilon_{m}}
+%\end{align*}
+%
+%Taking summation over all rounds for $m=0,1,...,\gamma$. 
+%
+%\begin{align*}
+%T_{\gamma} &= K+\sum_{m=0}^{\gamma}\dfrac{2\log(\psi T) + 4\log(\epsilon_{m})}{\epsilon_{m}}\\
+%&= K+2\log (\psi T)\sum_{m=0}^{\gamma}\dfrac{1}{\epsilon_{m}} + \sum_{m=0}^{\gamma}\dfrac{4\log (\epsilon_{m})}{\epsilon_{m}}\\
+%&< K+2\log (\psi T)\sum_{m=0}^{\gamma}\dfrac{1}{\epsilon_{m}} + \sum_{m=0}^{\gamma}\dfrac{4}{\epsilon_{m}}\\
+%&= K+2\log (\psi T)[1+2+2^{2}+....+2^{\gamma}] + 4[1+2+2^{2}+....+2^{\gamma}]\\
+%&= K+2\log (\psi T)[2^{\gamma} - 1] + 4[2^{\gamma} - 1]\\
+%&< K+2\log (\psi T)\sqrt{\dfrac{T}{e}} + 4\sqrt{\dfrac{T}{e}}\\
+%&= K+2\sqrt{\dfrac{T}{e}}[\log (\psi T) + 2]\\
+%&= K+4\sqrt{\dfrac{T}{e}}[\log (K T) + 1] \text{, for } \psi=K^{2}T\\
+%&< T
+%\end{align*}
+%
+%
+%\end{proof}
 
 
 \subsection{Theorem 1}
@@ -58,10 +58,9 @@ For any arm $i$, if it is eliminated from active set $B_{m}$ then the below two 
 
 For \ref{eq:armelim-casea} we can see that it eliminates arms that have performed poorly and removes them them from $B_{m}$. Similarly, \ref{eq:armelim-caseb} eliminates arms from $B_{m}$ that have performed very well compared to threshold $\tau$.
 
-Each round consist of $|B_{m_{i}}|n_{m_{i}}$ timesteps and so an arm can be pulled no more than $n_{m_{i}}$ times. This happens because of the following reason. 
+Each round consist of $|B_{m_{i}}|n_{m}$ timesteps. In the $m_{i}$-th round an arm $i$ can be pulled no more than $n_{m_{i}}$ times. So when $n_{i}=n_{m_{i}}$, putting the value of $n_{m_{i}}=\dfrac{2\log{(\psi T\epsilon_{m_{i}}^{2})}}{\epsilon_{m_{i}}}$ in $c_{i}$, 
 \begin{align*}
 c_{i}&=\sqrt{\dfrac{\rho\epsilon_{m_{i}}\log (\psi T\epsilon_{m_{i}}^{2})}{2 n_{i}}}\\
-&\text{ But $n_{i}\leq n_{m_{i}}$. Putting the value of $n_{m_{i}}=\dfrac{2\log{(\psi T\epsilon_{m_{i}}^{2})}}{\epsilon_{m_{i}}}$ in $c_{i}$,}\\
 &=\sqrt{\dfrac{\rho\epsilon_{m_{i}}\log (\psi T\epsilon_{m_{i}}^{2})}{2*2 \log(\psi T\epsilon_{m_{i}}^{2})}}\\
 & =\dfrac{\sqrt{\rho\epsilon_{m_{i}}}}{2}\\
 & \leq \sqrt{\rho\epsilon_{m_{i}+1}} < \dfrac{\Delta_{i}^{\tau}}{4} \text{, as }\rho\in (0,1].
@@ -89,13 +88,13 @@ Since, arm elimination condition is being checked at every timestep, in the $m_{
   \begin{align*}
 \mathbb{P}\lbrace\hat{r}_{i}\geq r_{i} - (\tau + 2c_{i})\rbrace &\leq exp(-2(\tau + 2c_{i})^{2}n_{i})\\
 &\leq exp(-2(2\tau c_{i})^{2}n_{i}) \text{ , as} (a+b)^{2} \geq (ab)^{2} \text{ for } a,b\in[0,1]\\
-&\leq exp(-8 * \dfrac{\rho\log (\psi T\epsilon_{m_{i}}^{2})}{2 n_{i}} *n_{i})\\
-&\leq \dfrac{1}{(\psi T\epsilon_{m_{i}}^{2})^{4\rho}}   
+&\leq exp(-8 * \tau^{2}\dfrac{\rho\log (\psi T\epsilon_{m_{i}}^{2})}{2 n_{i}} *n_{i})\\
+&\leq \dfrac{1}{(\psi T\epsilon_{m_{i}}^{2})^{4\tau^{2}\rho}}   
   \end{align*}
   
-Similarly, $\mathbb{P}\lbrace\hat{r}_{i}\leq r_{i} + (\tau + 2c_{i})\rbrace\leq \dfrac{1}{(\psi  T\epsilon_{m_{i}}^{2})^{4\rho}}$
+Similarly, $\mathbb{P}\lbrace\hat{r}_{i}\leq r_{i} + (\tau + 2c_{i})\rbrace\leq \dfrac{1}{(\psi  T\epsilon_{m_{i}}^{2})^{4\tau^{2}\rho}}$
  
-Summing, the two up, the probability that an arm ${i}$ is not eliminated on or before $m_{i}$-th round based on the \ref{eq:armelim-casea} and \ref{eq:armelim-caseb} elimination condition is  $\bigg(\dfrac{2}{(\psi T\epsilon_{m_{i}}^{2})^{4\rho}}\bigg)$. 
+Summing, the two up, the probability that an arm ${i}$ is not eliminated on or before $m_{i}$-th round based on the \ref{eq:armelim-casea} and \ref{eq:armelim-caseb} elimination condition is  $\bigg(\dfrac{2}{(\psi T\epsilon_{m_{i}}^{2})^{4\tau^{2}\rho}}\bigg)$. 
 
 %Also, for \ref{eq:armelim-caseb} elimination condition by applying Chernoff-Hoeffding bound and considering independence of complementary of the two events in \ref{eq:armelim-caseb} we can derive a similar bound that a sub-optimal arm ${i}$ is not eliminated on or before $m_{i}$-th by $\bigg(\dfrac{2}{(\psi T\epsilon_{m_{i}}^{2})^{\rho}}\bigg)$. 
 %
@@ -116,23 +115,23 @@ Now from reverse triangle inequality,
 &\geq |\hat{\Delta}_{k}^{\tau}(t) - \Delta_{k}^{\tau}| \label{rev-triangle}
 \end{align}
 
-Also, from case a, we know that for every arm $i$, in round $m_{i}$
+Also, from Case a, we know that for any arm $i$, in round $m_{i}$
 
 \begin{align}
-|\hat{r}_{k} - r_{k}| \leq c_{m_{k}} =  \sqrt{\dfrac{\rho\log{(\psi T\epsilon_{m}^{2})}}{2 n_{k}}}  \label{bound-1}
+|\hat{r}_{i} - r_{i}| \leq c_{m_{i}} =  \sqrt{\dfrac{\rho\log{(\psi T\epsilon_{m}^{2})}}{2 n_{i}}}  \label{bound-1}
 \end{align}
 
 Now, combining \ref{rev-triangle} and \ref{bound-1} we can see that,
 
 \begin{align*}
-&|\hat{\Delta}_{k}^{\tau}(t) - \Delta_{k}^{\tau}| \leq c_{m_{k}}\\
-&\Rightarrow \Delta_{k}^{\tau} - c_{m_{k}} \leq \hat{\Delta}_{k}^{\tau}(t) \leq \Delta_{k}^{\tau} +c_{m_{k}}
+&|\hat{\Delta}_{i}^{\tau}(t) - \Delta_{i}^{\tau}| \leq c_{m_{i}}\\
+&\Rightarrow \Delta_{i}^{\tau} - c_{m_{i}} \leq \hat{\Delta}_{i}^{\tau}(t) \leq \Delta_{i}^{\tau} +c_{m_{i}}
 \end{align*}
 
-Since, at time $t$ in round $m_{i}$ the arm i is pulled, so,
+Since, at time $t$ in round $m_{i}$ the arm $i$ is pulled, so,
 
 \begin{align*}
-\hat{\Delta}_{i}^{\tau} - c_{i} < \hat{\Delta}_{k}^{\tau} - c_{k}
+\hat{\Delta}_{i}^{\tau} - c_{i} < \hat{\Delta}_{k}^{\tau} - c_{k}, \forall k\in A'
 \end{align*}
 
 \end{proof}
