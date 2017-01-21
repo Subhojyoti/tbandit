@@ -2,11 +2,18 @@
 
 %%%%%%%%%%%%%%%% alg-custom-block %%%%%%%%%%%%
 \algblock{ArmElim}{EndArmElim}
-\algnewcommand\algorithmicArmElim{\textbf{\em Arm Elimination}}
+\algnewcommand\algorithmicArmElim{\textbf{\em Arm Elimination by Mean Estimation}}
  \algnewcommand\algorithmicendArmElim{}
 \algrenewtext{ArmElim}[1]{\algorithmicArmElim\ #1}
 \algrenewtext{EndArmElim}{\algorithmicendArmElim}
 \algtext*{EndArmElim}
+
+\algblock{ArmElimV}{EndArmElimV}
+\algnewcommand\algorithmicArmElimV{\textbf{\em Arm Elimination by Mean and Variance Estimation}}
+ \algnewcommand\algorithmicendArmElimV{}
+\algrenewtext{ArmElimV}[1]{\algorithmicArmElimV\ #1}
+\algrenewtext{EndArmElimV}{\algorithmicendArmElimV}
+\algtext*{EndArmElimV}
 
 \algblock{ResetParam}{EndResetParam}
 \algnewcommand\algorithmicResetParam{\textbf{\em Reset Parameters}}
@@ -19,7 +26,7 @@
 \caption{AugmentedUCB}
 \label{alg:augucb}
 \begin{algorithmic}
-\State {\bf Input:} Time horizon $T$, exploration parameters $\rho$ and $\psi$, threshold $\tau$.
+\State {\bf Input:} Time horizon $T$, exploration parameters $\rho$, $\rho_v$ and $\psi$, threshold $\tau$.
 \State {\bf Initialization:} Set $B_{0}:=A$, $M=\bigg\lfloor \dfrac{1}{2}\log_{2} \dfrac{T}{e}\bigg\rfloor $, $m:=0$, $\epsilon_{0}:=1$, $\ell_{0}=\big\lceil \dfrac{2\log(\psi T\epsilon_{0}^{2})}{\epsilon_{0}} \big\rceil$ and $N_{0}=K*\ell_{0} $.
 \State Pull each arm once
 %\State \For{$m=0,1,..\big \lfloor \dfrac{1}{2}\log_{2} \dfrac{T}{e}\big\rfloor$}{	
@@ -37,6 +44,16 @@
 \hat{r}_{i} - \sqrt{\dfrac{\rho\log{(\psi T\epsilon_{m}^{2})}}{2 n_{i}}}  > \tau +\sqrt{\dfrac{\rho\log{(\psi T\epsilon_{m}^{2})}}{2 n_{i}}} 
 \end{align*}
 \EndArmElim
+\ArmElimV
+\State For each arm $i \in B_{m}$, remove arm ${i}$ from $B_{m}$ if
+\begin{align*}
+\hat{r}_{i} + \sqrt{\dfrac{\rho_v\hat{V}_{i}\log{(\psi T\epsilon_{m}^{2})}}{2 n_{i}}}  < \tau -\sqrt{\dfrac{\rho_v\hat{V}_{i}\log{(\psi T\epsilon_{m}^{2})}}{2 n_{i}}} 
+\end{align*}
+\State For each arm $i \in B_{m}$, remove arm ${i}$ from $B_{m}$ if
+\begin{align*}
+\hat{r}_{i} - \sqrt{\dfrac{\rho_v\hat{V}_{i}\log{(\psi T\epsilon_{m}^{2})}}{2 n_{i}}}  > \tau +\sqrt{\dfrac{\rho_v\hat{V}_{i}\log{(\psi T\epsilon_{m}^{2})}}{2 n_{i}}} 
+\end{align*}
+\EndArmElimV
 \State \If{$t\geq N_{m}$ and $m \leq M$}{
 \ResetParam
 \State $\epsilon_{m+1}:=\dfrac{\epsilon_{m}}{2}$
