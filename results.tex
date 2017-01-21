@@ -111,8 +111,8 @@ For \ref{eq:armelim-var-casea} we can see that it eliminates arms that have perf
 
 In the $g_{i}$-th round an arm $i$ can be pulled no more than $\ell_{g_{i}}$ times. So when $n_{i}=\ell_{g_{i}}$, putting the value of $\ell_{g_{i}}=\dfrac{2\log{(\psi T\epsilon_{g_{i}}^{2})}}{\epsilon_{g_{i}}}$ in $s_{i}$ we get, 
 \begin{align*}
-s_{i}&=\sqrt{\dfrac{\rho_v \hat{V}_{i} \epsilon_{g_{i}}\log (\psi T\epsilon_{g_{i}}^{2})}{2 n_{i}}} \text{, as }\hat{V}_{i}\in [0,1].\\
-&\leq \sqrt{\dfrac{\rho_v \epsilon_{g_{i}}\log (\psi T\epsilon_{g_{i}}^{2})}{2*2 \log(\psi T\epsilon_{g_{i}}^{2})}}\\
+s_{i}&=\sqrt{\dfrac{\rho_v \hat{V}_{i} \epsilon_{g_{i}}\log (\psi T\epsilon_{g_{i}}^{2})}{2 n_{i}}} \\
+&\leq \sqrt{\dfrac{\rho_v \epsilon_{g_{i}}\log (\psi T\epsilon_{g_{i}}^{2})}{2*2 \log(\psi T\epsilon_{g_{i}}^{2})}} \text{, as }\hat{V}_{i}\in [0,1].\\
 & =\dfrac{\sqrt{\rho_v \epsilon_{g_{i}}}}{2}\\
 & \leq \sqrt{\rho_v \epsilon_{g_{i}+1}} < \dfrac{\Delta_{i}}{4} \text{, as }\rho_v\in (0,1].
 \end{align*}
@@ -143,8 +143,8 @@ Since, arm elimination condition is being checked at every timestep, in the $g_{
  
 Now, we know that in the $g_{i}$-th round,
 \begin{align*}
-\sqrt{\dfrac{\rho_v [\sigma_{i}^{2}+\sqrt{\rho_{v}\epsilon_{g_{i}}}]\log(\psi T\epsilon_{g_{i}}^{2})}{2n_{i}}} &\leq \sqrt{\dfrac{\rho_v [\sigma_{i}^{2}+\sqrt{\rho_{v}\epsilon_{g_{i}}}]\log(\psi T\epsilon_{g_{i}}^{2})}{\frac{4\log(\psi T \epsilon_{g_{i}}^{2})}{\epsilon_{g_{i}}}}}\\
-& \leq \sqrt{\dfrac{\rho_v \epsilon_{g_{i}}[\sigma_{i}^{2}+\sqrt{\rho_{v}\epsilon_{g_{i}}}]}{4}}\leq \sqrt{\rho_v \epsilon_{g_{i}}}
+2\sqrt{\dfrac{\rho_v [\sigma_{i}^{2}+\sqrt{\rho_{v}\epsilon_{g_{i}}}]\log(\psi T\epsilon_{g_{i}}^{2})}{2n_{i}}} &\leq  2\sqrt{\dfrac{\rho_v [\sigma_{i}^{2}+\sqrt{\rho_{v}\epsilon_{g_{i}}}]\log(\psi T\epsilon_{g_{i}}^{2})}{\frac{4\log(\psi T \epsilon_{g_{i}}^{2})}{\epsilon_{g_{i}}}}}\\
+& \leq \sqrt{\rho_v \epsilon_{g_{i}}[\sigma_{i}^{2}+\sqrt{\rho_{v}\epsilon_{g_{i}}}]}\leq \sqrt{\rho_v \epsilon_{g_{i}}}
 %\sqrt{\dfrac{\rho_v \epsilon_{g_{i}}}{2\sigma_{i}^{2}}}
 \end{align*}
 
@@ -154,6 +154,19 @@ For the first term in \ref{eq:prob_2eq}, by applying Bernstein inequality, we ca
 &\leq \exp\bigg(- \dfrac{\bigg(\rho_v [\sigma_{i}^{2}+\sqrt{\rho_{v}\epsilon_{g_{i}}}]\log(\psi T\epsilon_{g_{i}}^{2})\bigg)}{2\sigma_{i}^{2}+\frac{4}{3}\sqrt{\rho_v \epsilon_{g_{i}}}} \bigg)\\
 &\leq \exp\bigg(- \dfrac{3\rho_v}{2} \bigg(\dfrac{\sigma_{i}^{2}+\sqrt{\rho_{v}\epsilon_{g_{i}}}}{3\sigma_{i}^{2}+2\sqrt{\rho_v \epsilon_{g_{i}}}}\bigg) \log(\psi T\epsilon_{g_{i}}^{2}) \bigg) 
   \end{align*}
+  
+For the second term in \ref{eq:prob_2eq}, by applying Bernstein inequality, we can write as,
+ \begin{align*}
+\mathbb{P}\bigg\lbrace \hat{V}_{i}\geq \sigma_{i}^{2}+\sqrt{\rho_{v}\epsilon_{g_{i}}}\bigg\rbrace &\leq \mathbb{P}\bigg\lbrace r_{i} + (2\sqrt{\dfrac{\rho_v [\sigma_{i}^{2}+\sqrt{\frac{\rho_{v}\epsilon_{g_{i}}}{2}}]\log(\psi T\epsilon_{g_{i}}^{2})}{2n_{i}}})\bigg\rbrace\\
+% &\leq \exp\bigg(- \dfrac{\bigg(2\sqrt{\frac{\rho_v [\sigma_{i}^{2}+\sqrt{\rho_{v}\epsilon_{g_{i}}}]\log(\psi T\epsilon_{g_{i}}^{2})}{2n_{i}}}\bigg)^{2}n_{i}}{2\sigma_{i}^{2}+\frac{4}{3}\sqrt{\frac{\rho_v [\sigma_{i}^{2}+\sqrt{\rho_{v}\epsilon_{g_{i}}}]\log(\psi T\epsilon_{g_{i}}^{2})}{2n_{i}}}}\bigg) \\
+%&\leq \exp\bigg(- \dfrac{\bigg(\rho_v [\sigma_{i}^{2}+\sqrt{\rho_{v}\epsilon_{g_{i}}}]\log(\psi T\epsilon_{g_{i}}^{2})\bigg)}{2\sigma_{i}^{2}+\frac{4}{3}\sqrt{\rho_v \epsilon_{g_{i}}}} \bigg)\\
+&\leq \exp\bigg(- \dfrac{3\rho_v}{2} \bigg(\dfrac{\sigma_{i}^{2}+\sqrt{\rho_{v}\epsilon_{g_{i}}}}{3\sigma_{i}^{2}+2\sqrt{\rho_v \epsilon_{g_{i}}}}\bigg) \log(\psi T\epsilon_{g_{i}}^{2}) \bigg) 
+  \end{align*}
+  
+Similarly, the opposite condition for the complementary event for the elimination case \ref{eq:armelim-var-caseb} holds such that $\mathbb{P}\lbrace\hat{r}_{i}\leq r_{i} + 2s_{i}\rbrace \leq 2\exp\bigg(- \dfrac{3\rho_v}{2} \bigg(\dfrac{\sigma_{i}^{2}+\sqrt{\rho_{v}\epsilon_{g_{i}}}}{3\sigma_{i}^{2}+2\sqrt{\rho_v \epsilon_{g_{i}}}}\bigg) \log(\psi T\epsilon_{g_{i}}^{2}) \bigg)$.
+
+  Summing everything up, the probability that an arm ${i}$ is not eliminated on or before $g_{i}$-th round based on the \ref{eq:armelim-var-casea} and \ref{eq:armelim-var-caseb} elimination condition is  $4\exp\bigg(- \dfrac{3\rho_v}{2} \bigg(\dfrac{\sigma_{i}^{2}+\sqrt{\rho_{v}\epsilon_{g_{i}}}}{3\sigma_{i}^{2}+2\sqrt{\rho_v \epsilon_{g_{i}}}}\bigg) \log(\psi T\epsilon_{g_{i}}^{2}) \bigg)$. 
+  
   
 \begin{enumerate}
 \item \emph{Fact 1:} From above we know that the probability of elimination of a sub-optimal arm in the $m_{i}$-th round being not eliminated is bounded above by $P_{m_{i}}\leq\bigg(2\exp\big(-4\rho\log (\psi T\epsilon_{m_{i}}^{2})\big)\bigg)$.
